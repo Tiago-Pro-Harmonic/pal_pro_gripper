@@ -54,7 +54,7 @@
 
     <link name="${name}_outer_finger_${side}_link">
       <inertial>
-        <origin xyz="-0.001283 0.014397 -0.000" rpy="0 0 0" />
+        <origin xyz="-0.001283 0.014397 0" rpy="0 0 0" />
         <mass value="0.015989" />
         <inertia
           ixx="5.9879E-06" ixy="-5.2173E-07" ixz="5.9144E-23"
