@@ -7,10 +7,9 @@
         args="--timeout 120
               gripper$(arg suffix)_controller" />
               
-  <!-- TODO: Implement gripper grasping service -->
-  
-  <!-- <include file="$(find pal_pro_gripper_wrapper)/launch/grasping_service.launch">
+
+  <include file="$(find pal_pro_gripper_wrapper)/launch/grasping_service.launch">
     <arg name="side" value="$(arg side)"/>
-  </include> -->
+  </include>
 
 </launch>
