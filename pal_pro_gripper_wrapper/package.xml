@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pal_pro_gripper_wrapper</name>
+  <version>0.0.0</version>
+  <description>The pal_pro_gripper_wrapper package</description>
+
+  <maintainer email="david.terkuile@pal-robotics.com">David ter Kuile</maintainer>
+  <author email="david.terkuile@pal-robotics.com">David ter Kuile</author>
+
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>control_msgs</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>ddynamic_reconfigure_python</exec_depend>
+
+</package>
