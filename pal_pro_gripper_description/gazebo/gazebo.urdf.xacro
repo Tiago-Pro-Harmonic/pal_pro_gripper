@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+
+  Copyright (c) 2019, PAL Robotics, S.L.
+  All rights reserved.
+
+  This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
+  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/ or send a letter to
+  Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
+-->
+
+<robot name="pal_pro_gripper" xmlns:xacro="http://ros.org/wiki/xacro">
+ 
+  <xacro:macro name="mimic_joint_plugin_gazebo" params="name parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=0.1 robot_namespace:=''">
+    <gazebo>
+      <plugin name="${name}_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <joint>${parent_joint}</joint>
+        <mimicJoint>${mimic_joint}</mimicJoint>
+        <xacro:if value="${has_pid}">                     <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
+          <hasPID />
+        </xacro:if>
+        <multiplier>${multiplier}</multiplier>
+        <offset>${offset}</offset>
+        <sensitiveness>${sensitiveness}</sensitiveness>   <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
+        <maxEffort>${max_effort}</maxEffort>              <!-- only taken into account if has_pid:=true [Nm] -->
+        <xacro:unless value="${robot_namespace == ''}">
+          <robotNamespace>${robot_namespace}</robotNamespace>
+        </xacro:unless>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_gripper_grasp" params="name palm_link finger_link_left finger_link_right ">
+    <gazebo>
+      <gripper name="${name}">
+        <grasp_check>
+          <attach_steps>3</attach_steps>
+          <detach_steps>1</detach_steps>    <!-- should not change otherwise the object will be attached to the gripper too much time -->
+          <min_contact_count>3</min_contact_count>
+        </grasp_check>
+        <gripper_link>${finger_link_left}</gripper_link>
+        <gripper_link>${finger_link_right}</gripper_link>
+        <palm_link>${palm_link}</palm_link>
+      </gripper>
+    </gazebo>
+  </xacro:macro>
+
+</robot>

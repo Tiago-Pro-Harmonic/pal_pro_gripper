@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!--File
+  includes-->
+  <xacro:include filename="$(find pal_pro_gripper_description)/urdf/deg_to_rad.urdf.xacro" />
+  <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.transmission.xacro" />
+  <!-- Gazebo simulation plugins -->
+  <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
+
+  <!-- <xacro:include filename="$(find pal_pro_gripper_description)/urdf/grasping_frames.xacro" /> -->
+  <xacro:include filename="$(find pal_pro_gripper_description)/urdf/materials.urdf.xacro" />
+
+  <xacro:macro name="pro_finger" params="name side reflect">
+
+    <link name="${name}_inner_finger_${side}_link">
+      <inertial>
+        <origin xyz="-1.7347E-18 0.024759 0" rpy="0 0 0" />
+        <mass value="0.018619" />
+        <inertia
+          ixx="4.8806E-06" ixy="-7.6762E-22" ixz="1.0244E-22"
+          iyy="2.5471E-07" iyz="-1.1841E-21"
+          izz="4.9573E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_inner_finger_${side}_joint" type="revolute">
+      <origin xyz="${reflect * 0.013977} 0 0.033032"
+        rpy="${reflect * 90 * deg_to_rad} ${(90 - 42 * reflect) * deg_to_rad} 0" />
+      <parent link="${name}_base_link" />
+      <child link="${name}_inner_finger_${side}_link" />
+      <axis xyz="0 0 -1" />
+      <limit lower="-0.2618" upper="0" effort="0" velocity="0" />
+    </joint>
+    <!-- Mimic finger joint-->
+    <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_1"
+      parent_joint="${name}_finger_joint" mimic_joint="${name}_inner_finger_${side}_joint"
+      has_pid="false" multiplier="1.0" offset="0.0" />
+
+
+    <link name="${name}_outer_finger_${side}_link">
+      <inertial>
+        <origin xyz="-0.001283 0.014397 -0.000" rpy="0 0 0" />
+        <mass value="0.015989" />
+        <inertia
+          ixx="5.9879E-06" ixy="-5.2173E-07" ixz="5.9144E-23"
+          iyy="4.8725E-07" iyz="7.3911E-23"
+          izz="6.1497E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl" />
+        </geometry>
+        <material name="White" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will
+    mimic this joint-->
+    <xacro:property name="outer_finger_joint_name"
+      value="${name + '_finger_joint' if side == 'left' else name + '_outer_finger_' + side + '_joint'}" />
+
+    <joint name="${outer_finger_joint_name}" type="revolute">
+      <origin xyz="${reflect * 0.0288}  0.00 0.0285"
+        rpy="${ reflect * 90 * deg_to_rad } ${ (90 - 42 * reflect) * deg_to_rad } 0" />
+      <parent link="${name}_base_link" />
+      <child link="${name}_outer_finger_${side}_link" />
+      <axis xyz="0 0 -1" />
+      <limit lower="0" upper="0" effort="0" velocity="0" />
+    </joint>
+
+    <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will
+    mimic this joint-->
+    <xacro:unless value="${side == 'left'}">
+      <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_2"
+        parent_joint="${name}_finger_joint" mimic_joint="${name}_outer_finger_${side}_joint"
+        has_pid="false" multiplier="1.0" offset="0.0" />
+    </xacro:unless>
+
+    <link name="${name}_fingertip_${side}_link">
+      <inertial>
+        <origin xyz="-6.9960E-04 0.01167 0.0" rpy="0 0 0" />
+        <mass value="0.03266" />
+        <inertia
+          ixx="3.6361E-06" ixy="3.4071E-07" ixz="-1.4191E-14"
+          iyy="1.7070E-06" iyz="-3.3433E-14"
+          izz="2.8395E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_fingertip_${side}_joint" type="revolute">
+      <origin xyz="0 0.05 0.000" rpy="0 0 ${48 * deg_to_rad}" />
+      <parent link="${name}_inner_finger_${side}_link" />
+      <child link="${name}_fingertip_${side}_link" />
+      <axis xyz="0 0 -1" />
+      <limit lower="0" upper="0" effort="0" velocity="0" />
+    </joint>
+
+    <!-- Mimic finger joint-->
+    <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_3"
+      parent_joint="${name}_finger_joint" mimic_joint="${name}_fingertip_${side}_joint"
+      has_pid="false" multiplier="1.0" offset="0.0" />
+
+  </xacro:macro>
+
+
+  <xacro:macro name="pal_pro_gripper" params="name parent *origin">
+
+    <link name="${name}_base_link">
+      <inertial>
+        <origin xyz="6.0291E-05 -0.00013653 -0.0051371" rpy="0 0 0" />
+        <mass value="0.64278" />
+        <inertia
+          ixx="0.00033701" ixy="-8.3235E-07" ixz="5.4122E-07"
+          iyy="0.00042750" iyz="-4.3734E-07"
+          izz="0.00048564" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/base_link.stl" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/base_link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="${name}_base_link" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <xacro:pro_finger name="${name}" side='left' reflect="1" />
+    <xacro:pro_finger name="${name}" side='right' reflect="-1" />
+
+    <!-- Transmission only set to left outer finger joint, other joints are passive and mimic this
+    joint-->
+    <xacro:pal_pro_gripper_transmission name="${name}" />
+
+    <xacro:gazebo_gripper_grasp name="${name}_grasp" palm_link="${parent}" finger_link_left="${name}_inner_finger_left_link" finger_link_right="${name}_inner_finger_right_link" />
+
+
+  </xacro:macro>
+
+</robot>
