@@ -60,16 +60,51 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        All Links Enabled: false
+        All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        gripper_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_fingertip_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_fingertip_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_inner_finger_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_inner_finger_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_outer_finger_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_outer_finger_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         gripper_root_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: false
+          Value: true
         world:
           Alpha: 1
           Show Axes: false
@@ -85,6 +120,24 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        gripper_base_link:
+          Value: true
+        gripper_fingertip_left_link:
+          Value: true
+        gripper_fingertip_right_link:
+          Value: true
+        gripper_inner_finger_left_link:
+          Value: true
+        gripper_inner_finger_right_link:
+          Value: true
+        gripper_outer_finger_left_link:
+          Value: true
+        gripper_outer_finger_right_link:
+          Value: true
+        gripper_root_link:
+          Value: true
+        world:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 0.30000001192092896
       Name: TF
@@ -92,7 +145,19 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        {}
+        world:
+          gripper_root_link:
+            gripper_base_link:
+              gripper_inner_finger_left_link:
+                gripper_fingertip_left_link:
+                  {}
+              gripper_inner_finger_right_link:
+                gripper_fingertip_right_link:
+                  {}
+              gripper_outer_finger_left_link:
+                {}
+              gripper_outer_finger_right_link:
+                {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -123,7 +188,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.516015350818634
+      Distance: 1.5389690399169922
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -131,17 +196,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.03635578602552414
-        Y: -0.21075615286827087
-        Z: -0.07714610546827316
+        X: -0.11424557864665985
+        Y: -0.3542671501636505
+        Z: 0.21420006453990936
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.409797340631485
+      Pitch: 0.8197972774505615
       Target Frame: <Fixed Frame>
-      Yaw: 1.4733203649520874
+      Yaw: 1.1433206796646118
     Saved: ~
 Window Geometry:
   Displays:
@@ -159,5 +224,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 3840
+  X: 1920
   Y: 0

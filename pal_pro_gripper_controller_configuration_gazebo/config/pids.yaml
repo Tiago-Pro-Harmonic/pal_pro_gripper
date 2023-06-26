@@ -1,5 +1,5 @@
-p: 250
-d: 0
-i: 0
+p: 30
+d: 5
+i: 0.1
 i_clamp: 3
 torque_clamp: 60
