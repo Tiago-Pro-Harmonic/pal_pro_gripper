@@ -4,12 +4,8 @@
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.urdf.xacro" />
     
     <xacro:property name="name" value="gripper"/>
-
-    <!-- <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace></robotNamespace>
-        </plugin>
-    </gazebo> -->
+    <!-- Materials for visualization -->
+    <xacro:include filename="$(find tiago_description)/urdf/materials.urdf.xacro" />
 
     <link name="world"/>
     <joint name="world_fixed" type="fixed">
