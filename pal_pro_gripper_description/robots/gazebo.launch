@@ -18,16 +18,24 @@
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot" respawn="false" output="screen" />
 
   <!-- Robot state publisher -->
-  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="50.0"/>
     <param name="tf_prefix" type="string" value=""/>
   </node>
+
+  <!-- Joint state controller -->
+  <rosparam command="load" file="$(find joint_state_controller)/joint_state_controller.yaml" />
+
+  <!-- Controllers that come up started -->
+  <node name="bringup_controllers_spawner_js"
+        pkg="controller_manager" type="spawner" output="screen"
+        args="joint_state_controller" />
 
   <!-- TF lookup -->
   <node pkg="tf_lookup" type="tf_lookup" name="tf_lookup" output="screen"/>
 
   <rosparam file="$(find pal_pro_gripper_controller_configuration)/config/joint_trajectory_controllers.yaml" command="load"/>
-  <rosparam file="$(find pal_pro_gripper_controller_configuration_gazebo)/config/pids.yaml" command="load" ns="/gains"/>
-  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller --shutdown-timeout 0.5" />
+  <include file="$(find pal_pro_gripper_controller_configuration_gazebo)/launch/gripper_controller.launch"/>
+
 
 </launch>

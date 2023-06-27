@@ -3,13 +3,11 @@
 <robot name="pal_pro_gripper" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.urdf.xacro" />
     
-    <xacro:property name="prefix" value="gripper"/>
-
-    <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace></robotNamespace>
-        </plugin>
-    </gazebo>
+    <xacro:property name="name" value="gripper"/>
+    <!-- Materials for visualization -->
+    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/materials.urdf.xacro" />
+    <!-- Load gazebo plugins -->
+    <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
 
     <link name="world"/>
     <joint name="world_fixed" type="fixed">
@@ -41,8 +39,8 @@
     </link>
     
     
-    <xacro:pal_pro_gripper name="${prefix}" parent="gripper_root_link" >
-        <origin xyz="0.05 0 0.85" rpy="0 1.5708 0"/>
+    <xacro:pal_pro_gripper name="${name}" parent="gripper_root_link" >
+        <origin xyz="0.1 0 0.85" rpy="0 1.5708 0"/>
     </xacro:pal_pro_gripper>
     
 </robot>
