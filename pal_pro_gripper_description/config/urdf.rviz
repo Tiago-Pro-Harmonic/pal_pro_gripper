@@ -9,6 +9,8 @@ Panels:
         - /RobotModel1
         - /RobotModel1/Links1
         - /TF1
+        - /TF1/Frames1
+        - /TF1/Tree1
       Splitter Ratio: 0.7892860174179077
     Tree Height: 820
   - Class: rviz/Selection
@@ -60,7 +62,7 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        All Links Enabled: true
+        All Links Enabled: false
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
@@ -69,7 +71,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         gripper_fingertip_left_link:
           Alpha: 1
           Show Axes: false
@@ -119,25 +121,25 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         gripper_base_link:
           Value: true
         gripper_fingertip_left_link:
-          Value: true
+          Value: false
         gripper_fingertip_right_link:
-          Value: true
+          Value: false
         gripper_inner_finger_left_link:
-          Value: true
+          Value: false
         gripper_inner_finger_right_link:
-          Value: true
+          Value: false
         gripper_outer_finger_left_link:
           Value: true
         gripper_outer_finger_right_link:
           Value: true
         gripper_root_link:
-          Value: true
+          Value: false
         world:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 0.30000001192092896
       Name: TF
@@ -188,7 +190,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.5389690399169922
+      Distance: 0.7147035002708435
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -196,17 +198,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.11424557864665985
-        Y: -0.3542671501636505
-        Z: 0.21420006453990936
+        X: -0.053848642855882645
+        Y: -0.2985186278820038
+        Z: 0.5844578146934509
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8197972774505615
+      Pitch: 0.639797568321228
       Target Frame: <Fixed Frame>
-      Yaw: 1.1433206796646118
+      Yaw: 1.2633200883865356
     Saved: ~
 Window Geometry:
   Displays:
@@ -224,5 +226,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 1920
+  X: 3840
   Y: 0

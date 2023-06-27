@@ -43,7 +43,7 @@
         rpy="${reflect * 90 * deg_to_rad} ${(90 - 42 * reflect) * deg_to_rad} 0" />
       <parent link="${name}_base_link" />
       <child link="${name}_inner_finger_${side}_link" />
-      <axis xyz="0 0 -1" />
+      <axis xyz="0 0 1" />
       <limit lower="0" upper="0.81" velocity="2" effort="0.1" />
       <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
     </joint>
@@ -87,8 +87,8 @@
         rpy="${ reflect * 90 * deg_to_rad } ${ (90 - 42 * reflect) * deg_to_rad } 0" />
       <parent link="${name}_base_link" />
       <child link="${name}_outer_finger_${side}_link" />
-      <axis xyz="0 0 -1" />
-      <limit lower="0" upper="0.6" velocity="2" effort="0.1" />
+      <axis xyz="0 0 1" />
+      <limit lower="0" upper="${50 * deg_to_rad}" velocity="2" effort="0.1" />
       <xacro:if value="${side == 'left'}">
             <dynamics damping="0.03"/>
       </xacro:if>
@@ -133,7 +133,7 @@
       <origin xyz="0 0.05 0.000" rpy="0 0 ${48 * deg_to_rad}" />
       <parent link="${name}_inner_finger_${side}_link" />
       <child link="${name}_fingertip_${side}_link" />
-      <axis xyz="0 0 -1" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.8757" upper="0" velocity="2" effort="0.1" />
       <mimic joint="${name}_finger_joint" multiplier="-1" offset="0" />
     </joint>
@@ -184,8 +184,8 @@
       <provideFeedback>1</provideFeedback>
     </gazebo>
 
-    <xacro:pro_finger name="${name}" side="left" reflect="1" />
-    <xacro:pro_finger name="${name}" side="right" reflect="-1" />
+    <xacro:pro_finger name="${name}" side="left" reflect="-1" />
+    <xacro:pro_finger name="${name}" side="right" reflect="1" />
 
     <!-- Transmission only set to left outer finger joint, other joints are passive and mimic this
     joint-->

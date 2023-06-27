@@ -11,11 +11,11 @@
 
 <robot>
 
-  <!-- <material name="Grey">
+  <material name="Grey">
     <color rgba="0.75294 0.75294 0.75294 1"/>
   </material>
 
   <material name="White">
     <color rgba="1 1 1 1"/>
-  </material> -->
+  </material>
 </robot>
