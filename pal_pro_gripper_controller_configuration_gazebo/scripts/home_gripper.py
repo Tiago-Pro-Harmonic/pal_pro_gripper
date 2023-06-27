@@ -6,7 +6,7 @@ from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryG
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
 
-closed  = [0.0]
+open  = [0.0]
 
 if __name__ == "__main__":
   rospy.init_node("home_gripper")
@@ -25,7 +25,7 @@ if __name__ == "__main__":
   trajectory = JointTrajectory()
   trajectory.joint_names = joint_names
   trajectory.points.append(JointTrajectoryPoint())
-  trajectory.points[0].positions = closed
+  trajectory.points[0].positions = open
   trajectory.points[0].velocities = [0.0 for i in joint_names]
   trajectory.points[0].accelerations = [0.0 for i in joint_names]
   trajectory.points[0].time_from_start = rospy.Duration(2.0)
