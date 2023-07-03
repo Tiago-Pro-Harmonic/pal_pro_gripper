@@ -1,8 +1,5 @@
 <launch>
-  <arg name="multi" default=""/>
-  <param name="robot_description" command="rosrun xacro xacro '$(find pal_pro_gripper_description)/robots/pal_pro_gripper.urdf.xacro' $(arg multi)" />
+  <include file="$(find pal_pro_gripper_description)/robots/upload.launch" />
 
-  <include file="$(find urdf_test)/launch/test_urdf.launch">
-    <arg name="get_description" value="true"/>
-  </include>
+  <include file="$(find urdf_test)/launch/test_urdf.launch"/>
 </launch>
