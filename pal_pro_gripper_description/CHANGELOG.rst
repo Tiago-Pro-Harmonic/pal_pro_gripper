@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.1 (2023-07-03)
+------------------
 * Update dependencies and tests
 * Remove deprecated xacro --inorder from tests
 * Merge branch 'create-urdf' into 'main'
