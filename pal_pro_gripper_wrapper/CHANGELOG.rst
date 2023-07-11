@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.1 (2023-07-03)
 ------------------
 * Merge branch 'create-urdf' into 'main'
