@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_controller_configuration_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.2 (2023-07-11)
+------------------
 * Merge branch 'pids-fix' into 'main'
   P gain reduced
   See merge request robots/pal_pro_gripper!3

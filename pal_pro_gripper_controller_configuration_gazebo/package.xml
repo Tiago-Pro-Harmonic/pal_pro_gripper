@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>pal_pro_gripper_controller_configuration_gazebo</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <description>Controllers configuration for PAL pro gripper in Gazebo</description>
 
   <maintainer email="david.terkuile@pal-robotics.com">David ter Kuile</maintainer>
