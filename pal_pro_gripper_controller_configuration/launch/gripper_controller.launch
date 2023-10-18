@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+  <arg name="is_simulation"     default="false"/>
   <arg name="side" default=""/>
   <arg name="suffix" value="$(eval ('' if side == '' else '_' + side))"/>
   <node name="gripper$(arg suffix)_controllers_spawner"
@@ -11,5 +12,7 @@
   <include file="$(find pal_pro_gripper_wrapper)/launch/grasping_service.launch">
     <arg name="side" value="$(arg side)"/>
   </include>
+
+  <rosparam command="load" file="$(find pal_pro_gripper_controller_configuration)/config/gazebo_pids.yaml" ns="/gains/gripper$(arg suffix)_finger_joint" if="$(eval is_simulation)"/>
 
 </launch>
