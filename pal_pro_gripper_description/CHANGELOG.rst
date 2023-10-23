@@ -2,6 +2,14 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'feat/use_urdf_utils' into 'main'
+  Feat/use urdf utils
+  See merge request robots/pal_pro_gripper!4
+* remove materials to make use of pal_urdf_utils package
+* Contributors: Jordan Palacios, thomaspeyrucain
+
 0.0.2 (2023-07-11)
 ------------------
 
