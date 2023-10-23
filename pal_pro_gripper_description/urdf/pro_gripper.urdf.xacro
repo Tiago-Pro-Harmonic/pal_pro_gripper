@@ -4,7 +4,6 @@
 
   <!--File
   includes-->
-  <xacro:include filename="$(find pal_pro_gripper_description)/urdf/deg_to_rad.urdf.xacro" />
   <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.transmission.xacro" />
   <!-- Gazebo simulation plugins -->
   <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.gazebo.xacro" />
@@ -27,7 +26,7 @@
         <geometry>
           <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl" />
         </geometry>
-        <material name="Grey" />
+        <material name="White" />
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -118,7 +117,7 @@
         <geometry>
           <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl" />
         </geometry>
-        <material name="Grey" />
+        <material name="White" />
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -161,7 +160,7 @@
         <geometry>
           <mesh filename="package://pal_pro_gripper_description/meshes/base_link.stl" />
         </geometry>
-        <material name="Grey" />
+        <material name="pal/DarkGrey" />
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -177,6 +176,42 @@
       <child link="${name}_base_link" />
       <axis xyz="0 0 0" />
     </joint>
+
+    <gazebo reference="${name}_inner_finger_left_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_inner_finger_right_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_outer_finger_left_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_outer_finger_right_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_fingertip_right_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_fingertip_left_link">
+      <material>Gazebo/White</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_base_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
 
     <gazebo reference="${name}_finger_joint">
       <implicitSpringDamper>1</implicitSpringDamper>
