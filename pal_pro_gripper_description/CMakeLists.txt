@@ -1,29 +1,14 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(pal_pro_gripper_description)
 
-find_package(catkin REQUIRED)
+find_package(ament_cmake_auto REQUIRED)
+find_package(xacro REQUIRED)
 
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES pal_pro_gripper_description
-#  CATKIN_DEPENDS xacro
-#  DEPENDS system_lib
-)
+ament_auto_find_build_dependencies()
 
-foreach(dir meshes robots urdf gazebo)
-    install(DIRECTORY ${dir}/
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
-endforeach(dir)
-
-#############
-## Testing ##
-#############
-
-if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-  add_rostest(test/test_gripper_test.test)
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_auto_package(INSTALL_TO_SHARE)
