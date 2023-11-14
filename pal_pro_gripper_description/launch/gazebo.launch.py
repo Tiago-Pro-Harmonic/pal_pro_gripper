@@ -51,6 +51,12 @@ def get_resource_paths(packages_names):
 
 def generate_launch_description():
 
+    robot_state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('pal_pro_gripper_description'),
+            'launch'), '/robot_state_publisher.launch.py']),
+    )
+
     world_name_arg = DeclareLaunchArgument(
         'world_name', default_value='empty',
         description="Specify world name, we'll convert to full path"
@@ -84,6 +90,7 @@ def generate_launch_description():
     # Using this prevents shared library from being found
     # ld.add_action(SetEnvironmentVariable('GAZEBO_RESOURCE_PATH', tiago_resource_path))
 
+    ld.add_action(robot_state_publisher)
     ld.add_action(world_name_arg)
     ld.add_action(gazebo)
     ld.add_action(pal_pro_gripper_spawn)
