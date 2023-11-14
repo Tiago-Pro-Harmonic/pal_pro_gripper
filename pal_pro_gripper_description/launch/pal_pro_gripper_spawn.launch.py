@@ -30,13 +30,11 @@ def generate_launch_description():
                           arguments=['-topic', 'robot_description',
                                      '-entity', LaunchConfiguration(
                                          'model_name'),
-                                     # LaunchConfiguration('gzpose'),
                                      ],
                           output='screen')
 
     ld = LaunchDescription()
 
-    # ld.add_action(gz_pose)
     ld.add_action(model_name)
     ld.add_action(pal_pro_entity)
 
