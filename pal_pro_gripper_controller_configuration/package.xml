@@ -14,7 +14,6 @@
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>position_controllers</exec_depend>
   <exec_depend>joint_trajectory_controller</exec_depend>
-  <exec_depend>pal_pro_gripper_wrapper</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_pal</exec_depend>
 

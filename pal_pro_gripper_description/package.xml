@@ -15,7 +15,6 @@
   <build_depend>xacro</build_depend>
 
   <exec_depend>xacro</exec_depend>
-  <exec_depend>rosbash</exec_depend>
   <exec_depend>pal_urdf_utils</exec_depend>
 
   <test_depend>urdf_test</test_depend>
