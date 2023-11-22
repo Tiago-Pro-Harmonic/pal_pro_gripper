@@ -26,7 +26,7 @@ limitations under the License.
 
     <!-- Transmission only set to left outer finger joint, other joints are passive and mimic this
     joint-->
-    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pal_pro_gripper.transmission.xacro" />
+    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.transmission.xacro" />
     <xacro:pal_pro_gripper_transmission name="${name}"/>
 
   </xacro:macro>
