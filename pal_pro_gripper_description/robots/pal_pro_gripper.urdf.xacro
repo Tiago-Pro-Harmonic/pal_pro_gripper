@@ -7,11 +7,16 @@
     <xacro:include filename="$(find pal_urdf_utils)/urdf/materials.urdf.xacro" />
 
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.urdf.xacro" />
-
-    <xacro:property name="name" value="gripper"/>
-
+    
     <!-- Load gazebo plugins -->
     <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
+
+    <xacro:property name="name" value="gripper"/>
+    <xacro:arg name="use_sim" default="false"/>
+
+    <!-- ros2_control -->
+    <xacro:include filename="$(find pal_pro_gripper_description)/ros2_control/ros2_control.urdf.xacro" />
+    <xacro:pal_pro_gripper_ros2_control use_sim="$(arg use_sim)" />
 
     <link name="world"/>
     <joint name="world_fixed" type="fixed">
