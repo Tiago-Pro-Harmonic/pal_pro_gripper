@@ -43,11 +43,11 @@
       <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
     </joint>
     
-    <!-- Mimic finger joint-->
+    <!-- Mimic finger joint
      <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_1"
       parent_joint="${name}_finger_joint" mimic_joint="${name}_inner_finger_${side}_joint"
       has_pid="false" multiplier="1.0" offset="0" />
-
+    -->
 
     <link name="${name}_outer_finger_${side}_link">
       <inertial>
@@ -96,9 +96,9 @@
     <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will
     mimic this joint-->
     <xacro:unless value="${side == 'left'}">
-      <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_2"
+      <!--<xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_2"
         parent_joint="${name}_finger_joint" mimic_joint="${name}_outer_finger_${side}_joint"
-        has_pid="false" multiplier="1.0" offset="0.0" />
+        has_pid="false" multiplier="1.0" offset="0.0" />-->
     </xacro:unless>
 
     <link name="${name}_fingertip_${side}_link">
@@ -134,10 +134,10 @@
       <mimic joint="${name}_finger_joint" multiplier="-1" offset="0" />
     </joint>
 
-    <!-- Mimic finger joint-->
+    <!-- Mimic finger joint
     <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_3"
       parent_joint="${name}_finger_joint" mimic_joint="${name}_fingertip_${side}_joint"
-      has_pid="false" multiplier="-1.0" offset="0.0" />
+      has_pid="false" multiplier="-1.0" offset="0.0" />-->
 
   </xacro:macro>
 
