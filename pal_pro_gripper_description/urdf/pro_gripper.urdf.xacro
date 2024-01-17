@@ -88,9 +88,9 @@
       <xacro:if value="${side == 'left'}">
             <dynamics damping="0.03"/>
       </xacro:if>
-      <!-- <xacro:unless value="${side == 'left'}">
+      <xacro:unless value="${side == 'left'}">
             <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
-      </xacro:unless> -->
+      </xacro:unless> 
     </joint>
 
     <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will
