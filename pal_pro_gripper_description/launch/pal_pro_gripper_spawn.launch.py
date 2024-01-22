@@ -29,7 +29,8 @@ def generate_launch_description():
     pal_pro_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                           arguments=['-topic', 'robot_description',
                                      '-entity', LaunchConfiguration(
-                                         'model_name'),
+                                             'model_name'),
+                                     "-x", "0.0", "-y", "0.0", "-z", "0.08",
                                      ],
                           output='screen')
 
