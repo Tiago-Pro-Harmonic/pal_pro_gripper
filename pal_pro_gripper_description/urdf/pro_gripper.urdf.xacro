@@ -2,11 +2,6 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!--File
-  includes-->
-
-  <!-- TODO: grasping frames -->
-
   <xacro:macro name="pro_finger" params="name side reflect">
 
     <link name="${name}_inner_finger_${side}_link">
@@ -43,11 +38,6 @@
       <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
     </joint>
     
-    <!-- Mimic finger joint
-     <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_1"
-      parent_joint="${name}_finger_joint" mimic_joint="${name}_inner_finger_${side}_joint"
-      has_pid="false" multiplier="1.0" offset="0" />
-    -->
 
     <link name="${name}_outer_finger_${side}_link">
       <inertial>
@@ -93,14 +83,6 @@
       </xacro:unless> 
     </joint>
 
-    <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will
-    mimic this joint-->
-    <xacro:unless value="${side == 'left'}">
-      <!--<xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_2"
-        parent_joint="${name}_finger_joint" mimic_joint="${name}_outer_finger_${side}_joint"
-        has_pid="false" multiplier="1.0" offset="0.0" />-->
-    </xacro:unless>
-
     <link name="${name}_fingertip_${side}_link">
       <inertial>
         <origin xyz="-6.9960E-04 0.01167 0.0" rpy="0 0 0" />
@@ -133,11 +115,6 @@
       <limit lower="${-53 * deg_to_rad}" upper="0" velocity="2" effort="0.1" />
       <mimic joint="${name}_finger_joint" multiplier="-1" offset="0" />
     </joint>
-
-    <!-- Mimic finger joint
-    <xacro:mimic_joint_plugin_gazebo name="${name}_${side}_mimic_pro_gripper_3"
-      parent_joint="${name}_finger_joint" mimic_joint="${name}_fingertip_${side}_joint"
-      has_pid="false" multiplier="-1.0" offset="0.0" />-->
 
   </xacro:macro>
 
