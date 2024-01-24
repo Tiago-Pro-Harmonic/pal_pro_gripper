@@ -1,0 +1,14 @@
+gripper_controller:
+  ros__parameters:
+    joints:
+      - gripper_finger_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+
+    constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 5.0
+      gripper_finger_joint:
+        goal: 0.02
