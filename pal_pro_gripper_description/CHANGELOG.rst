@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2024-01-29)
+------------------
 * Merge branch 'fix-spawn' into 'humble-devel'
   add world_link to improve the spawn in simulation
   See merge request robots/pal_pro_gripper!7
