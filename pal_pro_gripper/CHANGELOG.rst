@@ -2,6 +2,15 @@
 Changelog for package pal_pro_gripper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'ros2-migration' into 'humble-devel'
+  Ros2 migration
+  See merge request robots/pal_pro_gripper!5
+* update to 3.8 the cmake_minimum_required Version
+* migration of CMakeLists.txt and package.xml to ros2
+* Contributors: Adria Roig, ileniaperrella
+
 0.0.3 (2023-10-23)
 ------------------
 

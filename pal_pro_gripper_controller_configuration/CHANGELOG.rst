@@ -2,6 +2,23 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'ros2-migration' into 'humble-devel'
+  Ros2 migration
+  See merge request robots/pal_pro_gripper!5
+* delete type of the controller in the yaml
+* add gazebo_controller_manager_cfg
+* add missing exc_depends
+* update to 3.8 the cmake_minimum_required Version
+* clean package.xml file
+* clean CMakeLists.txt and package of contr.conf.
+* delete not necessary dependencies
+* fix yaml file
+* controller_configuration pkg migration
+* migration of CMakeLists.txt and package.xml to ros2
+* Contributors: Adria Roig, ileniaperrella
+
 0.0.3 (2023-10-23)
 ------------------
 * Merge branch 'feat/use_urdf_utils' into 'main'
