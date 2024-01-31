@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2024-01-31)
+------------------
 * Merge branch 'fix-collision' into 'humble-devel'
   Fix collision
   See merge request robots/pal_pro_gripper!8
