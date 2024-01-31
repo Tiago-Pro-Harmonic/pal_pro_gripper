@@ -2,6 +2,15 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'fix-collision' into 'humble-devel'
+  Fix collision
+  See merge request robots/pal_pro_gripper!8
+* simplify the root link adding a world link
+* fix collision of the little box support
+* Contributors: Adria Roig, ileniaperrella
+
 1.0.0 (2024-01-29)
 ------------------
 * Merge branch 'fix-spawn' into 'humble-devel'
