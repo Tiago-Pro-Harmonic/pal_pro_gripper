@@ -118,6 +118,28 @@
 
   </xacro:macro>
 
+    <!--Dummy joint/link to prevent error with mimic joint
+    See https://github.com/ros-controls/gazebo_ros2_control/issues/173
+    -->
+
+  <xacro:macro name="dummy_mimic_joint" params="name parent">
+
+    <link name="${name}_dummy_mimic_link"/>
+
+    <joint name="${name}_joint_mimic" type="fixed">
+      <parent link="${parent}" />
+      <child link="${name}_dummy_mimic_link" />
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:macro name="finger_mimic_dummy" params="name side">
+
+    <xacro:dummy_mimic_joint name="${name}_fingertip_${side}" parent="${name}_base_link"/>
+    <xacro:dummy_mimic_joint name="${name}_inner_finger_${side}" parent="${name}_base_link"/>
+    <!-- <xacro:dummy_mimic_joint name="${prefix}${fingerprefix}_outer_finger_right_joint" parent="${prefix}base_link"/> -->
+    <!-- <xacro:dummy_mimic_joint name="${prefix}${fingerprefix}_inner_knuckle" parent="${prefix}base_link"/> -->
+  </xacro:macro>
 
   <xacro:macro name="pal_pro_gripper" params="name parent *origin">
 
@@ -195,6 +217,12 @@
 
     <xacro:pro_finger name="${name}" side="left" reflect="-1" />
     <xacro:pro_finger name="${name}" side="right" reflect="1" />
+
+    <!-- Temporary fix until mimic joint works properly with MoveIt!-->
+    <xacro:finger_mimic_dummy name="${name}" side="right"/>
+    <xacro:finger_mimic_dummy name="${name}" side="left"/>
+
+    <xacro:dummy_mimic_joint name="${name}_outer_finger_right" parent="${name}_base_link"/>
 
   </xacro:macro>
 
