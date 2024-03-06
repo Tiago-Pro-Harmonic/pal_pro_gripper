@@ -137,8 +137,6 @@
 
     <xacro:dummy_mimic_joint name="${name}_fingertip_${side}" parent="${name}_base_link"/>
     <xacro:dummy_mimic_joint name="${name}_inner_finger_${side}" parent="${name}_base_link"/>
-    <!-- <xacro:dummy_mimic_joint name="${prefix}${fingerprefix}_outer_finger_right_joint" parent="${prefix}base_link"/> -->
-    <!-- <xacro:dummy_mimic_joint name="${prefix}${fingerprefix}_inner_knuckle" parent="${prefix}base_link"/> -->
   </xacro:macro>
 
   <xacro:macro name="pal_pro_gripper" params="name parent *origin">
