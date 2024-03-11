@@ -2,6 +2,21 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'dtk/fix/mimic-join-hack' into 'humble-devel'
+  Dtk/fix/mimic join hack
+  See merge request robots/pal_pro_gripper!10
+* Remove commented lines
+* Add dummy link for the mimic joints
+* Slight refactor of mimic joint ros2 control
+* Merge branch 'dtk/fix/add-linter-tests' into 'humble-devel'
+  Dtk/fix/add linter tests
+  See merge request robots/pal_pro_gripper!11
+* Add tests packages to package.xml
+* Add linter tests in CMakeLists.txt
+* Contributors: David ter Kuile, davidterkuile
+
 1.0.2 (2024-03-06)
 ------------------
 
