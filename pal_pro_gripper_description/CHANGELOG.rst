@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.3 (2024-03-11)
+------------------
 * Merge branch 'dtk/fix/mimic-join-hack' into 'humble-devel'
   Dtk/fix/mimic join hack
   See merge request robots/pal_pro_gripper!10
