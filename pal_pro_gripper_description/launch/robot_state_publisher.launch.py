@@ -14,49 +14,66 @@
 
 import os
 from pathlib import Path
+from dataclasses import dataclass
 
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
+from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
 from launch.substitutions import LaunchConfiguration
 
 from launch_param_builder import load_xacro
 from launch_ros.actions import Node
 
 
-def declare_args(context, *args, **kwargs):
+@dataclass(frozen=True)
+class LaunchArguments(LaunchArgumentsBase):
 
-    sim_time_arg = DeclareLaunchArgument(
-        'use_sim_time', default_value='true',
+    use_sim_time: DeclareLaunchArgument = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='False',
         description='Use simulation time')
 
-    return [sim_time_arg]
 
+def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
-def launch_setup(context, *args, **kwargs):
-
-    robot_description = {'robot_description': load_xacro(
-        Path(os.path.join(
-            get_package_share_directory('pal_pro_gripper_description'),
-            'robots',
-            'pal_pro_gripper.urdf.xacro')))}
+    launch_description.add_action(OpaqueFunction(
+        function=create_robot_description_param))
 
     rsp = Node(package='robot_state_publisher',
                executable='robot_state_publisher',
                output='both',
-               parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')},
-                           robot_description])
+               parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time'),
+                            "robot_description": LaunchConfiguration('robot_description')}])
 
-    return [rsp]
+    launch_description.add_action(rsp)
+
+    return
 
 
 def generate_launch_description():
 
+    # Create the launch description and populate
     ld = LaunchDescription()
+    launch_arguments = LaunchArguments()
 
-    ld.add_action(OpaqueFunction(function=declare_args))
-    # Execute robot_state_publisher node
-    ld.add_action(OpaqueFunction(function=launch_setup))
+    launch_arguments.add_to_launch_description(ld)
+
+    declare_actions(ld, launch_arguments)
 
     return ld
+
+
+def create_robot_description_param(context):
+
+    xacro_file_path = Path(os.path.join(
+        get_package_share_directory('pal_pro_gripper_description'),
+        'robots', 'pal_pro_gripper.urdf.xacro'))
+
+    xacro_input_args = {
+        'use_sim': read_launch_argument('use_sim_time', context),
+    }
+    robot_description = load_xacro(xacro_file_path, xacro_input_args)
+
+    return [SetLaunchConfiguration('robot_description', robot_description)]

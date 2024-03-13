@@ -1,4 +1,4 @@
-# Copyright (c) 2023 PAL Robotics S.L. All rights reserved.
+# Copyright (c) 2022 PAL Robotics S.L. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,16 +11,77 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import os
 from os import environ, pathsep
-
-from ament_index_python.packages import get_package_prefix, get_package_share_directory
+from ament_index_python.packages import get_package_prefix
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_pal.include_utils import include_launch_py_description
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+
+from launch_pal.include_utils import include_scoped_launch_py_description
+from launch_pal.arg_utils import LaunchArgumentsBase
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class LaunchArguments(LaunchArgumentsBase):
+
+    world_name: DeclareLaunchArgument = DeclareLaunchArgument(
+        name='world_name',
+        default_value='empty',
+        description="Specify world name, we'll convert to full path")
+
+
+def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
+
+    robot_state_publisher = include_scoped_launch_py_description(
+        pkg_name='pal_pro_gripper_description',
+        paths=['launch', 'robot_state_publisher.launch.py'],
+        launch_arguments={'use_sim_time': 'True'})
+
+    launch_description.add_action(robot_state_publisher)
+
+    packages = ['pal_pro_gripper_description']
+
+    model_path = get_model_paths(packages)
+
+    gazebo_model_path_env_var = SetEnvironmentVariable(
+        'GAZEBO_MODEL_PATH', model_path)
+
+    gazebo = include_scoped_launch_py_description(
+        pkg_name='pal_gazebo_worlds',
+        paths=['launch', 'pal_gazebo.launch.py'],
+        env_vars=[gazebo_model_path_env_var],
+        launch_arguments={
+            "world_name":  launch_args.world_name,
+            "model_paths": packages,
+            "resource_paths": packages,
+        })
+
+    launch_description.add_action(gazebo)
+
+    pal_pro_gripper_spawn = include_scoped_launch_py_description(
+        pkg_name='pal_pro_gripper_description', paths=[
+            'launch', 'robot_spawn.launch.py'],
+        launch_arguments={'use_sim_time': 'True'})
+
+    launch_description.add_action(pal_pro_gripper_spawn)
+
+    return
+
+
+def generate_launch_description():
+
+    # Create the launch description
+    ld = LaunchDescription()
+
+    launch_arguments = LaunchArguments()
+
+    launch_arguments.add_to_launch_description(ld)
+
+    declare_actions(ld, launch_arguments)
+
+    return ld
 
 
 def get_model_paths(packages_names):
@@ -34,6 +95,9 @@ def get_model_paths(packages_names):
 
         model_paths += model_path
 
+    if 'GAZEBO_MODEL_PATH' in environ:
+        model_paths += pathsep + environ['GAZEBO_MODEL_PATH']
+
     return model_paths
 
 
@@ -46,53 +110,7 @@ def get_resource_paths(packages_names):
         package_path = get_package_prefix(package_name)
         resource_paths += package_path
 
-    return resource_paths
-
-
-def generate_launch_description():
-
-    robot_state_publisher = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('pal_pro_gripper_description'),
-            'launch'), '/robot_state_publisher.launch.py']),
-    )
-
-    world_name_arg = DeclareLaunchArgument(
-        'world_name', default_value='empty',
-        description="Specify world name, we'll convert to full path"
-    )
-
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('pal_gazebo_worlds'),
-            'launch'), '/pal_gazebo.launch.py']),
-    )
-
-    pal_pro_gripper_spawn = include_launch_py_description(
-        'pal_pro_gripper_description', [
-            'launch', 'pal_pro_gripper_spawn.launch.py'],
-        launch_arguments={'use_sim_time': 'True'}.items())
-
-    packages = ['pal_pro_gripper_description']
-    model_path = get_model_paths(packages)
-    resource_path = get_resource_paths(packages)
-
-    if 'GAZEBO_MODEL_PATH' in environ:
-        model_path += pathsep + environ['GAZEBO_MODEL_PATH']
-
     if 'GAZEBO_RESOURCE_PATH' in environ:
-        resource_path += pathsep + environ['GAZEBO_RESOURCE_PATH']
+        resource_paths += pathsep + environ['GAZEBO_RESOURCE_PATH']
 
-    # Create the launch description and populate
-    ld = LaunchDescription()
-
-    ld.add_action(SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path))
-    # Using this prevents shared library from being found
-    # ld.add_action(SetEnvironmentVariable('GAZEBO_RESOURCE_PATH', tiago_resource_path))
-
-    ld.add_action(robot_state_publisher)
-    ld.add_action(world_name_arg)
-    ld.add_action(gazebo)
-    ld.add_action(pal_pro_gripper_spawn)
-
-    return ld
+    return resource_paths

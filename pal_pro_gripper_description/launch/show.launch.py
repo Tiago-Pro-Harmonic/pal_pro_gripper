@@ -13,16 +13,46 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch_pal.include_utils import include_launch_py_description
 from launch_ros.actions import Node
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
+from dataclasses import dataclass
+from launch_pal.arg_utils import LaunchArgumentsBase
+from launch.actions import DeclareLaunchArgument
+from launch_pal.include_utils import include_scoped_launch_py_description
+
+
+@dataclass(frozen=True)
+class LaunchArguments(LaunchArgumentsBase):
+
+    use_sim_time: DeclareLaunchArgument = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='False',
+        description='Use simulation time')
+
 
 def generate_launch_description():
 
-    robot_state_publisher = include_launch_py_description(
-        'pal_pro_gripper_description', ['launch', 'robot_state_publisher.launch.py'])
+    # Create the launch description and populate
+    ld = LaunchDescription()
+    launch_arguments = LaunchArguments()
+
+    launch_arguments.add_to_launch_description(ld)
+
+    declare_actions(ld, launch_arguments)
+
+    return ld
+
+
+def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
+
+    robot_state_publisher = include_scoped_launch_py_description(
+        pkg_name='pal_pro_gripper_description',
+        paths=['launch', 'robot_state_publisher.launch.py'],
+        launch_arguments={"use_sim_time": launch_args.use_sim_time})
+
+    launch_description.add_action(robot_state_publisher)
 
     start_joint_pub_gui = Node(
         package='joint_state_publisher_gui',
@@ -30,8 +60,10 @@ def generate_launch_description():
         name='joint_state_publisher_gui',
         output='screen')
 
+    launch_description.add_action(start_joint_pub_gui)
+
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare('pal_pro_gripper_description'), 'config', 'urdf.rviz'])
+        [FindPackageShare('pal_pro_gripper_description'), 'config', 'show.rviz'])
 
     start_rviz_cmd = Node(
         package='rviz2',
@@ -40,13 +72,7 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file],
         output='screen',
         parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')
-                     }]
-    )
+                     }])
+    launch_description.add_action(start_rviz_cmd)
 
-    ld = LaunchDescription()
-
-    ld.add_action(robot_state_publisher)
-    ld.add_action(start_joint_pub_gui)
-    ld.add_action(start_rviz_cmd)
-
-    return ld
+    return
