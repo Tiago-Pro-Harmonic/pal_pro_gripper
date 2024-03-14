@@ -20,7 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
-from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
+from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument, CommonArgs
 from launch.substitutions import LaunchConfiguration
 
 from launch_param_builder import load_xacro
@@ -30,10 +30,7 @@ from launch_ros.actions import Node
 @dataclass(frozen=True)
 class LaunchArguments(LaunchArgumentsBase):
 
-    use_sim_time: DeclareLaunchArgument = DeclareLaunchArgument(
-        name='use_sim_time',
-        default_value='False',
-        description='Use simulation time')
+    use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):

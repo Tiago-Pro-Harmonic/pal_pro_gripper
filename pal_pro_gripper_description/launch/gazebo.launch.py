@@ -34,10 +34,12 @@ class LaunchArguments(LaunchArgumentsBase):
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
+    use_sim_time = 'True'
+
     robot_state_publisher = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description',
         paths=['launch', 'robot_state_publisher.launch.py'],
-        launch_arguments={'use_sim_time': 'True'})
+        launch_arguments={'use_sim_time': use_sim_time})
 
     launch_description.add_action(robot_state_publisher)
 
@@ -63,7 +65,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
     pal_pro_gripper_spawn = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description', paths=[
             'launch', 'robot_spawn.launch.py'],
-        launch_arguments={'use_sim_time': 'True'})
+        launch_arguments={'use_sim_time': use_sim_time})
 
     launch_description.add_action(pal_pro_gripper_spawn)
 

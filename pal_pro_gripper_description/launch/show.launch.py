@@ -14,22 +14,17 @@
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 
 from dataclasses import dataclass
 from launch_pal.arg_utils import LaunchArgumentsBase
-from launch.actions import DeclareLaunchArgument
 from launch_pal.include_utils import include_scoped_launch_py_description
 
 
 @dataclass(frozen=True)
 class LaunchArguments(LaunchArgumentsBase):
-
-    use_sim_time: DeclareLaunchArgument = DeclareLaunchArgument(
-        name='use_sim_time',
-        default_value='False',
-        description='Use simulation time')
+    pass
 
 
 def generate_launch_description():
@@ -47,10 +42,12 @@ def generate_launch_description():
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
+    use_sim_time = 'True'
+
     robot_state_publisher = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description',
         paths=['launch', 'robot_state_publisher.launch.py'],
-        launch_arguments={"use_sim_time": launch_args.use_sim_time})
+        launch_arguments={"use_sim_time": use_sim_time})
 
     launch_description.add_action(robot_state_publisher)
 
@@ -71,8 +68,8 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
         name='rviz2',
         arguments=['-d', rviz_config_file],
         output='screen',
-        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')
-                     }])
+        parameters=[{'use_sim_time': use_sim_time}])
+
     launch_description.add_action(start_rviz_cmd)
 
     return
