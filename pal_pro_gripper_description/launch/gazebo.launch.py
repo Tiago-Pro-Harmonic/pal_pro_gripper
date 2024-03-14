@@ -16,8 +16,8 @@ from os import environ, pathsep
 from ament_index_python.packages import get_package_prefix
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
-
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable, SetLaunchConfiguration
+from launch.substitutions import LaunchConfiguration
 from launch_pal.include_utils import include_scoped_launch_py_description
 from launch_pal.arg_utils import LaunchArgumentsBase
 from dataclasses import dataclass
@@ -34,12 +34,13 @@ class LaunchArguments(LaunchArgumentsBase):
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
-    use_sim_time = 'True'
+    set_sim_time = SetLaunchConfiguration('use_sim_time', 'True')
+    launch_description.add_action(set_sim_time)
 
     robot_state_publisher = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description',
         paths=['launch', 'robot_state_publisher.launch.py'],
-        launch_arguments={'use_sim_time': use_sim_time})
+        launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')})
 
     launch_description.add_action(robot_state_publisher)
 
@@ -65,7 +66,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
     pal_pro_gripper_spawn = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description', paths=[
             'launch', 'robot_spawn.launch.py'],
-        launch_arguments={'use_sim_time': use_sim_time})
+        launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')})
 
     launch_description.add_action(pal_pro_gripper_spawn)
 

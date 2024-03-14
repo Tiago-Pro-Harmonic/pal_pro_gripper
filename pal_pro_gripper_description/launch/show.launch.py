@@ -14,7 +14,8 @@
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution
+from launch.actions import SetLaunchConfiguration
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
 from dataclasses import dataclass
@@ -42,12 +43,13 @@ def generate_launch_description():
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
-    use_sim_time = 'True'
+    set_sim_time = SetLaunchConfiguration('use_sim_time', 'True')
+    launch_description.add_action(set_sim_time)
 
     robot_state_publisher = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_description',
         paths=['launch', 'robot_state_publisher.launch.py'],
-        launch_arguments={"use_sim_time": use_sim_time})
+        launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')})
 
     launch_description.add_action(robot_state_publisher)
 
@@ -68,7 +70,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
         name='rviz2',
         arguments=['-d', rviz_config_file],
         output='screen',
-        parameters=[{'use_sim_time': use_sim_time}])
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}])
 
     launch_description.add_action(start_rviz_cmd)
 
