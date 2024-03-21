@@ -2,6 +2,17 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'dtk/fix/restructure' into 'humble-devel'
+  Dtk/fix/restructure
+  See merge request robots/pal_pro_gripper!13
+* Update copyright to 2024
+* Fix use_sim_time arg and set to True for all simulations
+* Add use_sim_time as common launch arg
+* restructure launch files pal_pro_gripper_description
+* Contributors: David ter Kuile, Noel Jimenez, davidterkuile
+
 1.0.3 (2024-03-11)
 ------------------
 * Merge branch 'dtk/fix/mimic-join-hack' into 'humble-devel'

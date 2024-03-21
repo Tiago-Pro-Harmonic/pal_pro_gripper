@@ -2,6 +2,16 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'dtk/fix/restructure' into 'humble-devel'
+  Dtk/fix/restructure
+  See merge request robots/pal_pro_gripper!13
+* Update copyright to 2024
+* Rename to pal_pro_gripper_controller.launch.py
+* Restructure launch file controller_configurations
+* Contributors: David ter Kuile, Noel Jimenez, davidterkuile
+
 1.0.3 (2024-03-11)
 ------------------
 * Merge branch 'dtk/fix/add-linter-tests' into 'humble-devel'
