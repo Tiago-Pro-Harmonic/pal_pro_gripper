@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.4 (2024-03-21)
+------------------
 * Merge branch 'dtk/fix/restructure' into 'humble-devel'
   Dtk/fix/restructure
   See merge request robots/pal_pro_gripper!13
