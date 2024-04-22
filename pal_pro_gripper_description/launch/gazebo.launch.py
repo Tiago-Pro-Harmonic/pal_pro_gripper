@@ -70,6 +70,12 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
 
     launch_description.add_action(pal_pro_gripper_spawn)
 
+    pal_pro_gripper_controller = include_scoped_launch_py_description(
+        pkg_name='pal_pro_gripper_controller_configuration', paths=[
+            'launch', 'pal_pro_gripper_controller.launch.py'],
+        launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')})
+
+    launch_description.add_action(pal_pro_gripper_controller)
     return
 
 

@@ -23,6 +23,7 @@ from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
 from launch.actions import DeclareLaunchArgument, SetLaunchConfiguration, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch import LaunchDescription, LaunchContext
+from launch_pal.include_utils import include_launch_py_description
 
 
 @dataclass(frozen=True)
@@ -43,7 +44,12 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
         controller_type='joint_trajectory_controller/JointTrajectoryController',
         controller_params_file=LaunchConfiguration("controller_config"))
 
+    joint_state_broadcaster_controller = include_launch_py_description(
+        pkg_name='pal_pro_gripper_controller_configuration',
+        paths=['launch', 'joint_state_broadcaster.launch.py'])
+
     launch_description.add_action(launch_controller)
+    launch_description.add_action(joint_state_broadcaster_controller)
 
     return
 
