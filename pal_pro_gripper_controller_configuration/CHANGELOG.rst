@@ -2,6 +2,18 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'feat/controllers' into 'humble-devel'
+  Add jtc controller & joint_state_broadcaster
+  See merge request robots/pal_pro_gripper!14
+* delete caster joints
+* add joint_broadcaster controller directly in the standalone launch file
+* add standalone controller launch file
+* add controller into gazebo simulation
+* add joint_state_broadcaster config
+* Contributors: Aina Irisarri, davidterkuile
+
 1.0.4 (2024-03-21)
 ------------------
 * Merge branch 'dtk/fix/restructure' into 'humble-devel'
