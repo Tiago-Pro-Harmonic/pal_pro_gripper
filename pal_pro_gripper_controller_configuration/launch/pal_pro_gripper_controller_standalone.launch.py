@@ -17,60 +17,34 @@ import os
 from dataclasses import dataclass
 
 from ament_index_python.packages import get_package_share_directory
+from launch_pal.arg_utils import LaunchArgumentsBase
+from launch import LaunchDescription
+from launch_pal.include_utils import include_scoped_launch_py_description
 from controller_manager.launch_utils import generate_load_controller_launch_description
-from launch_pal.param_utils import parse_parametric_yaml
-from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
-from launch.actions import DeclareLaunchArgument, SetLaunchConfiguration, OpaqueFunction
-from launch.substitutions import LaunchConfiguration
-from launch import LaunchDescription, LaunchContext
-from launch_pal.include_utils import include_launch_py_description
 
 
 @dataclass(frozen=True)
 class LaunchArguments(LaunchArgumentsBase):
-    side: DeclareLaunchArgument = DeclareLaunchArgument(
-        name='side',
-        default_value='',
-        choices=['', 'left', 'right'],
-        description='side of the end effector')
+    pass
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
-    launch_description.add_action(OpaqueFunction(function=setup_controller_configuration))
-
-    launch_controller = generate_load_controller_launch_description(
-        controller_name=LaunchConfiguration("controller_name"),
-        controller_type='joint_trajectory_controller/JointTrajectoryController',
-        controller_params_file=LaunchConfiguration("controller_config"))
-
-    joint_state_broadcaster_controller = include_launch_py_description(
+    launch_controller = include_scoped_launch_py_description(
         pkg_name='pal_pro_gripper_controller_configuration',
-        paths=['launch', 'joint_state_broadcaster.launch.py'])
+        paths=['launch', 'pal_pro_gripper_controller.launch.py'])
+
+    joint_state_broadcaster_controller = generate_load_controller_launch_description(
+        controller_name='joint_state_broadcaster',
+        controller_type='joint_state_broadcaster/JointStateBroadcaster',
+        controller_params_file=os.path.join(
+            get_package_share_directory('pal_pro_gripper_controller_configuration'),
+            'config', 'joint_state_broadcaster.yaml'))
 
     launch_description.add_action(launch_controller)
     launch_description.add_action(joint_state_broadcaster_controller)
 
     return
-
-
-def setup_controller_configuration(context: LaunchContext):
-
-    side = read_launch_argument('side', context)
-    ee_prefix = "gripper"
-    if side:
-        ee_prefix = f"gripper_{side}"
-
-    controller_name = f"{ee_prefix}_controller"
-    remappings = {"EE_SIDE_PREFIX": ee_prefix}
-    param_file = os.path.join(
-        get_package_share_directory('pal_pro_gripper_controller_configuration'),
-        'config', 'gripper_controller.yaml')
-
-    parsed_yaml = parse_parametric_yaml(source_files=[param_file], param_rewrites=remappings)
-
-    return [SetLaunchConfiguration('controller_name', controller_name),
-            SetLaunchConfiguration('controller_config', parsed_yaml)]
 
 
 def generate_launch_description():
