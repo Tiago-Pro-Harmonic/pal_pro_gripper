@@ -44,7 +44,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
 
     launch_description.add_action(robot_state_publisher)
 
-    packages = ['pal_pro_gripper_description']
+    packages = ['pal_pro_gripper_description', 'pal_pro_gripper_simulation']
 
     model_path = get_model_paths(packages)
 
@@ -64,7 +64,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
     launch_description.add_action(gazebo)
 
     pal_pro_gripper_spawn = include_scoped_launch_py_description(
-        pkg_name='pal_pro_gripper_description', paths=[
+        pkg_name='pal_pro_gripper_simulation', paths=[
             'launch', 'robot_spawn.launch.py'],
         launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')})
 
