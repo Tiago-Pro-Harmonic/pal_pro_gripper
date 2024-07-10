@@ -11,7 +11,7 @@
 
   <license>Apache License 2.0</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <exec_depend>pal_gazebo_worlds</exec_depend>
   <exec_depend>pal_pro_gripper_description</exec_depend>
   <exec_depend>pal_pro_gripper_controller_configuration</exec_depend>
