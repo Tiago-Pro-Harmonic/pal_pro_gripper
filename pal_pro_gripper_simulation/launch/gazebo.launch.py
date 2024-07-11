@@ -44,7 +44,7 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
 
     launch_description.add_action(robot_state_publisher)
 
-    packages = ['pal_pro_gripper_description', 'pal_pro_gripper_simulation']
+    packages = ['pal_pro_gripper_description']
 
     model_path = get_model_paths(packages)
 
