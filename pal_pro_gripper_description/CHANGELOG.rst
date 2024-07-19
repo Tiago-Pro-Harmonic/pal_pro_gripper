@@ -2,6 +2,18 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'air/feat/create_simulation_pkg' into 'humble-devel'
+  create simulation package
+  See merge request robots/pal_pro_gripper!17
+* create simulation package & changing gazebo launch files into this pkg
+* Merge branch 'dtk/fix/remove-mimic-joint-interface' into 'humble-devel'
+  Remove mimic joint hardware interfaces
+  See merge request robots/pal_pro_gripper!16
+* Remove mimic joint hardware interfaces
+* Contributors: Aina, David ter Kuile, davidterkuile
+
 1.0.5 (2024-04-23)
 ------------------
 * Merge branch 'feat/controllers' into 'humble-devel'

@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.5 (2024-04-23)
 ------------------
 * Merge branch 'feat/controllers' into 'humble-devel'
