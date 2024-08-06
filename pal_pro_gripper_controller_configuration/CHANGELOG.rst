@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use controller_type from the controllers config
+* Contributors: Noel Jimenez
+
 1.0.6 (2024-07-19)
 ------------------
 

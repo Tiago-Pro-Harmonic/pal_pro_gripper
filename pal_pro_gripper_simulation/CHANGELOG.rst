@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.6 (2024-07-19)
 ------------------
 * Merge branch 'air/feat/create_simulation_pkg' into 'humble-devel'
