@@ -36,7 +36,6 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
 
     joint_state_broadcaster_controller = generate_load_controller_launch_description(
         controller_name='joint_state_broadcaster',
-        controller_type='joint_state_broadcaster/JointStateBroadcaster',
         controller_params_file=os.path.join(
             get_package_share_directory('pal_pro_gripper_controller_configuration'),
             'config', 'joint_state_broadcaster.yaml'))
