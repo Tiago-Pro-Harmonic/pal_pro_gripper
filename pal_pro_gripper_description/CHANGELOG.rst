@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update gripper joint limit based on new encoder reduction of 81
+* Contributors: Aina
+
 1.1.0 (2024-08-06)
 ------------------
 
