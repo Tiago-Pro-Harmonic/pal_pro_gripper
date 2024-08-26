@@ -25,11 +25,12 @@ from launch.substitutions import LaunchConfiguration
 from launch_pal.robot_arguments import CommonArgs
 from launch_param_builder import load_xacro
 from launch_ros.actions import Node
+from pal_pro_gripper_description.launch_arguments import PalProGripperArgs
 
 
 @dataclass(frozen=True)
 class LaunchArguments(LaunchArgumentsBase):
-
+    tool_changer: DeclareLaunchArgument = PalProGripperArgs.tool_changer
     use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
 
 
@@ -70,6 +71,7 @@ def create_robot_description_param(context):
 
     xacro_input_args = {
         'use_sim': read_launch_argument('use_sim_time', context),
+        'tool_changer': read_launch_argument('tool_changer', context),
     }
     robot_description = load_xacro(xacro_file_path, xacro_input_args)
 

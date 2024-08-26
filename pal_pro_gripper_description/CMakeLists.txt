@@ -11,5 +11,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-
+ament_python_install_package(${PROJECT_NAME})
 ament_auto_package(INSTALL_TO_SHARE config gazebo robots launch meshes urdf ros2_control)

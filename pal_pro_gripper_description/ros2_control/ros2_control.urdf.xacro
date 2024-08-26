@@ -14,19 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  -->
-<robot xmlns:xacro="http://ros.org/wiki/xacro"
-       name="pal_pro_gripper" >
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="pal_pro_gripper">
 
-    <xacro:macro name="pal_pro_gripper_ros2_control" params="use_sim:=^|false">
+  <xacro:macro name="pal_pro_gripper_ros2_control">
 
-    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pal_pro_gripper.ros2_control.xacro" />
+    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.ros2_control.xacro" />
 
     <ros2_control name="ros2_control_pal_pro_gripper_system" type="system">
       <hardware>
-        <xacro:if value="$(arg use_sim)">
+        <xacro:if value="${use_sim_time}">
           <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </xacro:if>
-        <xacro:unless value="$(arg use_sim)">
+        <xacro:unless value="${use_sim_time}">
           <plugin>robot_control/RobotControl</plugin>
         </xacro:unless>
       </hardware>
