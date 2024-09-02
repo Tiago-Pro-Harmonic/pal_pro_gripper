@@ -27,8 +27,8 @@
         </inertial>
     </xacro:macro>
 
-    <xacro:macro name="origin_inner_finger_joint" params="reflect">
-        <origin xyz="0 ${reflect * 0.013977} 0.078832" rpy="1.5708 0.83776 ${reflect * 1.5708}" />
+    <xacro:macro name="origin_inner_finger_joint" params="reflect offset">
+        <origin xyz="0 ${reflect * 0.013977} ${0.078832 + offset}" rpy="1.5708 0.83776 ${reflect * 1.5708}" />
     </xacro:macro>
 
     <!-- Outer finger -->
@@ -40,8 +40,8 @@
         </inertial>
     </xacro:macro>
 
-    <xacro:macro name="origin_outer_finger_joint" params="reflect">
-        <origin xyz="0 ${reflect * 0.0288} 0.0743" rpy="1.5708 0.83776 ${reflect * 1.5708}" />
+    <xacro:macro name="origin_outer_finger_joint" params="reflect offset">
+        <origin xyz="0 ${reflect * 0.0288} ${0.0743 + offset}" rpy="1.5708 0.83776 ${reflect * 1.5708}" />
     </xacro:macro>
 
     <!-- Fingertip -->

@@ -3,7 +3,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- A finger of the pal_pro_gripper -->
-  <xacro:macro name="pro_finger" params="name side reflect">
+  <xacro:macro name="pro_finger" params="name side reflect finger_offset:=0">
 
     <!-- Inner finger -->
     <link name="${name}_inner_finger_${side}_link">
@@ -26,7 +26,7 @@
     </link>
 
     <joint name="${name}_inner_finger_${side}_joint" type="revolute">
-      <xacro:origin_inner_finger_joint reflect="${reflect}" />
+      <xacro:origin_inner_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
       <parent link="${name}_base_link" />
       <child link="${name}_inner_finger_${side}_link" />
       <axis xyz="0 0 1" />
@@ -58,7 +58,7 @@
     <xacro:property name="outer_finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_outer_finger_' + side + '_joint'}" />
 
     <joint name="${outer_finger_joint_name}" type="revolute">
-      <xacro:origin_outer_finger_joint reflect="${reflect}"/>
+      <xacro:origin_outer_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
       <parent link="${name}_base_link" />
       <child link="${name}_outer_finger_${side}_link" />
       <axis xyz="0 0 1" />
@@ -103,10 +103,11 @@
   </xacro:macro>
 
   <!-- GRIPPER DEFINITION -->
-  <xacro:macro name="pal_pro_gripper" params="tool_changer name parent *origin">
+  <xacro:macro name="pal_pro_gripper" params="tool_changer:=False name parent *origin">
 
     <!-- Vesion name depending if it is a prototype -->
     <xacro:property name="base_type" value="${'base_link_tc' if tool_changer else 'base_link_ntc'}" />
+    <xacro:property name="finger_offset" value="${0.0 if tool_changer else 0.006}" />
 
     <!-- Properties files -->
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.properties.xacro"/>
@@ -142,8 +143,8 @@
     </joint>
 
     <!-- Fingers -->
-    <xacro:pro_finger name="${name}" side="left" reflect="-1" />
-    <xacro:pro_finger name="${name}" side="right" reflect="1" />
+    <xacro:pro_finger name="${name}" side="left" reflect="-1" finger_offset="${finger_offset}"/>
+    <xacro:pro_finger name="${name}" side="right" reflect="1" finger_offset="${finger_offset}"/>
 
     <!-- Gazebo config -->
     <gazebo reference="${name}_inner_finger_left_link">

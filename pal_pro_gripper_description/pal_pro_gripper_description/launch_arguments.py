@@ -21,7 +21,7 @@ from ament_index_python.packages import get_package_share_directory
 
 @dataclass(frozen=True)
 class PalProGripperArgs:
-    """This dataclass contains launch arguments for PAL Pro Gripper"""
+    """This dataclass contains launch arguments for PAL Pro Gripper."""
 
     __robot_name = 'pal_pro_gripper'
     __pkg_dir = get_package_share_directory(f"{__robot_name}_description")
