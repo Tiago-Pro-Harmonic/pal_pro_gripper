@@ -70,7 +70,7 @@ def create_robot_description_param(context):
         'robots', 'pal_pro_gripper.urdf.xacro'))
 
     xacro_input_args = {
-        'use_sim': read_launch_argument('use_sim_time', context),
+        'use_sim_time': read_launch_argument('use_sim_time', context),
         'tool_changer': read_launch_argument('tool_changer', context),
     }
     robot_description = load_xacro(xacro_file_path, xacro_input_args)

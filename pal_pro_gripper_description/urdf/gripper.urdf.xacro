@@ -106,7 +106,7 @@
   <xacro:macro name="pal_pro_gripper" params="tool_changer:=False name parent *origin">
 
     <!-- Vesion name depending if it is a prototype -->
-    <xacro:property name="base_type" value="${'base_link_tc' if tool_changer else 'base_link_ntc'}" />
+    <xacro:property name="gripper_base_type" value="${'base_link_tc' if tool_changer else 'base_link_ntc'}" />
     <xacro:property name="finger_offset" value="${0.0 if tool_changer else 0.006}" />
 
     <!-- Properties files -->
@@ -123,14 +123,14 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/${base_type}.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/${gripper_base_type}.stl" />
         </geometry>
         <material name="pal/DarkGrey" />
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/${base_type}.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/${gripper_base_type}.stl" />
         </geometry>
       </collision>
     </link>
