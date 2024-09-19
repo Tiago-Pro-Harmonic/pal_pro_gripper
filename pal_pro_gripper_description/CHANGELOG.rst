@@ -2,6 +2,16 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'omm/gripper_std' into 'humble-devel'
+  Gripper standarization
+  See merge request robots/pal_pro_gripper!21
+* Gripper std and suggested changes
+* Proper base origin and offset
+* Gripper std with tool_changer new arg
+* Contributors: davidterkuile, oscarmartinez
+
 1.2.0 (2024-08-09)
 ------------------
 * Update gripper joint limit based on new encoder reduction of 81
