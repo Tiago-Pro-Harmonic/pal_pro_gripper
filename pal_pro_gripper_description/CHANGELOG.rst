@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.0 (2024-09-19)
+------------------
 * Merge branch 'omm/gripper_std' into 'humble-devel'
   Gripper standarization
   See merge request robots/pal_pro_gripper!21
