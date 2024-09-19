@@ -1,27 +1,45 @@
 <?xml version="1.0" ?>
 
-<robot name="pal_pro_gripper" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="pal_pro_gripper"
+    xmlns:xacro="http://ros.org/wiki/xacro">
 
-    <!--File includes-->
+    <!-- ARGUMENTS  -->
+
+    <!-- False, True -->
+    <xacro:arg name="tool_changer" default="False"/>
+
+    <!-- false, true -->
+    <xacro:arg name="use_sim_time" default="False"/>
+
+    <!-- PROPERTIES -->
+    <xacro:property name="tool_changer" value="$(arg tool_changer)" />
+    <xacro:property name="use_sim_time" value="$(arg use_sim_time)" />
+    <xacro:property name="name" value="gripper"/>
+
+    <!-- INCLUDES -->
+
+    <!-- Helpers -->
     <xacro:include filename="$(find pal_urdf_utils)/urdf/deg_to_rad.urdf.xacro" />
     <xacro:include filename="$(find pal_urdf_utils)/urdf/materials.urdf.xacro" />
 
-    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/pro_gripper.urdf.xacro" />
-    
-    <!-- Load gazebo plugins -->
+    <!-- Gripper -->
+    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.urdf.xacro" />
+
+    <!-- ROS 2 control-->
+    <xacro:include filename="$(find pal_pro_gripper_description)/ros2_control/ros2_control.urdf.xacro" />
+
+    <!-- Gazebo plugins -->
     <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
 
-    <xacro:property name="name" value="gripper"/>
-    <xacro:arg name="use_sim" default="false"/>
-
-    <!-- ros2_control -->
-    <xacro:include filename="$(find pal_pro_gripper_description)/ros2_control/ros2_control.urdf.xacro" />
-    <xacro:pal_pro_gripper_ros2_control use_sim="$(arg use_sim)" />
+    <!-- ROBOT DEFINITION -->
 
     <link name="world"/>
 
-    <xacro:pal_pro_gripper name="${name}" parent="world">
+    <xacro:pal_pro_gripper tool_changer="${tool_changer}" name="${name}" parent="world">
         <origin xyz="0.0 0.0 0.08" rpy="0 0 0" />
     </xacro:pal_pro_gripper>
-    
+
+    <!-- ROS 2 Control -->
+    <xacro:pal_pro_gripper_ros2_control />
+
 </robot>
