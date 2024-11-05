@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.3.0 (2024-09-19)
 ------------------
 * Merge branch 'omm/gripper_std' into 'humble-devel'
