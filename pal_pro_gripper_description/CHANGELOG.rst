@@ -2,6 +2,14 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'tpe/simplify-3d-model' into 'humble-devel'
+  Simplify 3d meshes
+  See merge request robots/pal_pro_gripper!24
+* Simplify 3d meshes
+* Contributors: thomas.peyrucain, thomaspeyrucain
+
 1.4.0 (2024-11-05)
 ------------------
 
