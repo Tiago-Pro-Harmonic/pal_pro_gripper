@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove choices for end-effector side for triago compatibility
+* Contributors: David ter Kuile
+
 1.5.0 (2025-01-16)
 ------------------
 
