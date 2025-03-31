@@ -30,8 +30,7 @@ class LaunchArguments(LaunchArgumentsBase):
     side: DeclareLaunchArgument = DeclareLaunchArgument(
         name='side',
         default_value='',
-        choices=['', 'left', 'right'],
-        description='side of the end effector')
+        description='side of the end effector, can be left empty')
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
