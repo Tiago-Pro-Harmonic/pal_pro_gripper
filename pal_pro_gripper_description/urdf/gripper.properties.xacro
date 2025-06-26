@@ -3,9 +3,9 @@
     <!-- Base with tool changer-->
     <xacro:macro name="inertial_base_link_tc">
         <inertial>
-            <origin xyz="-0.000111195944040731 -5.20000467719152E-05 0.04682714296137" rpy="0 0 0" />
-            <mass value="0.351833020899102" />
-            <inertia ixx="0.000212702588837237" ixy="-1.5724450163606E-07" ixz="4.66935789777261E-07" iyy="0.000159938323491697" iyz="-1.90446642900145E-07" izz="0.000254149142086845" />
+            <origin xyz="-5.081E-05 6.06E-06 0.04330857" rpy="0 0 0" />
+            <mass value="0.59671873" />
+            <inertia ixx="0.00064209" ixy="-2.1E-07" ixz="6.5E-07" iyy="0.00060742" iyz="2.1E-07" izz="0.00037836" />
         </inertial>
     </xacro:macro>
 
