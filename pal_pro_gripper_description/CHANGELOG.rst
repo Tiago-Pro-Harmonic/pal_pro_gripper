@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update griper base link Inertias
+* Contributors: lurenaud
+
 1.5.1 (2025-03-31)
 ------------------
 
