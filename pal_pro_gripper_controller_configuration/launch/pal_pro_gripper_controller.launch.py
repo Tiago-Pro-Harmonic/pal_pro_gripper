@@ -59,7 +59,8 @@ def setup_grasp_checker(context: LaunchContext):
         get_package_share_directory('pal_pro_gripper_grasp_check'),
         'config', 'gripper.yaml')
 
-    parsed_yaml = parse_parametric_yaml(source_files=[grasp_check_params], param_rewrites=remappings)
+    parsed_yaml = parse_parametric_yaml(source_files=[grasp_check_params],
+                                        param_rewrites=remappings)
 
     grasp_check_srv = Node(
         package='pal_pro_gripper_grasp_check',
