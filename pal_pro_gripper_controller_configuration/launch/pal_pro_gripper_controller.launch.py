@@ -23,6 +23,7 @@ from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
 from launch.actions import DeclareLaunchArgument, SetLaunchConfiguration, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch import LaunchDescription, LaunchContext
+from launch_ros.actions import Node
 
 
 @dataclass(frozen=True)
@@ -40,10 +41,35 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
     launch_controller = generate_load_controller_launch_description(
         controller_name=LaunchConfiguration("controller_name"),
         controller_params_file=LaunchConfiguration("controller_config"))
-
     launch_description.add_action(launch_controller)
 
+    launch_description.add_action(OpaqueFunction(function=setup_grasp_checker))
     return
+
+
+def setup_grasp_checker(context: LaunchContext):
+
+    side = read_launch_argument('side', context)
+    ee_prefix = "gripper"
+    if side:
+        ee_prefix = f"gripper_{side}"
+
+    remappings = {"EE_SIDE_PREFIX": ee_prefix}
+    grasp_check_params = os.path.join(
+        get_package_share_directory('pal_pro_gripper_grasp_check'),
+        'config', 'gripper.yaml')
+
+    parsed_yaml = parse_parametric_yaml(source_files=[grasp_check_params], param_rewrites=remappings)
+
+    grasp_check_srv = Node(
+        package='pal_pro_gripper_grasp_check',
+        executable='gripper_grasp_check_srv',
+        output='screen',
+        emulate_tty=True,
+        parameters=[parsed_yaml],
+    )
+
+    return [grasp_check_srv]
 
 
 def setup_controller_configuration(context: LaunchContext):
