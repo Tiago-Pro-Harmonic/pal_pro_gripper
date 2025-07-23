@@ -25,23 +25,33 @@ class GripperChecker(Node):
         self.closing_time = float(self.get_parameter('closing_time').value)
 
         # Subs to gripper state
-        self.state_sub = self.create_subscription(JointTrajectoryControllerState, f'/{self.controller_name}/controller_state', self.state_cb, qos_profile=1)
-        self.get_logger().info("Subscribed to topic: " + str(self.state_sub.topic_name))
+        self.state_sub = self.create_subscription(
+            JointTrajectoryControllerState, f'/{self.controller_name}\
+            /controller_state', self.state_cb, qos_profile=1)
+        self.get_logger().info("Subscribed to topic: " + str(
+            self.state_sub.topic_name))
 
         # Publisher on the gripper topic
-        self.cmd_pub = self.create_publisher(JointTrajectory, f'/{self.controller_name}/joint_trajectory', 10)
-        self.get_logger().info("Publishing on topic: " + str(self.cmd_pub.topic_name))
+        self.cmd_pub = self.create_publisher(
+            JointTrajectory, f'/{self.controller_name}/joint_trajectory', 10)
+        self.get_logger().info("Publishing on topic: " + str(
+            self.cmd_pub.topic_name))
 
         # Graspng srv to offer
-        self.grasp_srv = self.create_service(Empty, f'/{self.controller_name}/grasp', self.grasp_cb)
-        self.get_logger().info("Offering grasp srv on: " + str(self.grasp_srv.srv_name))
+        self.grasp_srv = self.create_service(
+            Empty, f'/{self.controller_name}/grasp', self.grasp_cb)
+        self.get_logger().info("Offering grasp srv on: " + str(
+            self.grasp_srv.srv_name))
 
-        self.release_srv = self.create_service(Empty, f'/{self.controller_name}/release', self.open_cb)
-        self.get_logger().info("Offering release srv on: " + str(self.release_srv.srv_name))
+        self.release_srv = self.create_service(
+            Empty, f'/{self.controller_name}/release', self.open_cb)
+        self.get_logger().info("Offering release srv on: " + str(
+            self.release_srv.srv_name))
 
         # Publish a boolean to know if an object is grasped or not
         self.pub_grasp_state = self.create_publisher(Bool, 'is_grasped', 10)
-        self.get_logger().info("Publishing on topic: " + str(self.pub_grasp_state.topic_name))
+        self.get_logger().info("Publishing on topic: " + str(
+            self.pub_grasp_state.topic_name))
 
         self.is_grasped = Bool()
         self.on_optimal_close = False
@@ -93,7 +103,11 @@ class GripperChecker(Node):
             self.on_optimal_open = False
             self.get_clock().sleep_for(Duration(seconds=self.closing_time))
 
-        while rclpy.ok() and (self.get_clock().now() - init_time) < Duration(seconds=self.timeout) and not self.on_optimal_close:
+        condition = rclpy.ok() and (
+            self.get_clock().now() - init_time) < Duration(
+                seconds=self.timeout) and not self.on_optimal_close
+
+        while condition:
 
             if self.last_state is None:
                 self.get_logger().warn("Waiting for gripper state...")
