@@ -1,4 +1,4 @@
-gripper_grasp_check_srv:
+gripper_grasper_srv:
   ros__parameters:
     # The name of the controller,
     controller_name:
@@ -10,9 +10,6 @@ gripper_grasp_check_srv:
     max_position_error: 0.0015
     timeout: 3.0
     rate: 1.0
-
-    # Rate at which to publish the state of the controller
-    pub_rate: 50
     tolerance: 0.0005
 
     # Time for which to open/close the gripper
