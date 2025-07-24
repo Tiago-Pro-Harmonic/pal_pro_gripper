@@ -56,15 +56,15 @@ def setup_grasp_checker(context: LaunchContext):
 
     remappings = {"EE_SIDE_PREFIX": ee_prefix}
     grasp_check_params = os.path.join(
-        get_package_share_directory('pal_pro_gripper_grasp_check'),
+        get_package_share_directory('pal_pro_gripper_wrapper'),
         'config', 'gripper.yaml')
 
     parsed_yaml = parse_parametric_yaml(source_files=[grasp_check_params],
                                         param_rewrites=remappings)
 
     grasp_check_srv = Node(
-        package='pal_pro_gripper_grasp_check',
-        executable='gripper_grasp_check_srv',
+        package='pal_pro_gripper_wrapper',
+        executable='gripper_grasper_srv',
         output='screen',
         emulate_tty=True,
         parameters=[parsed_yaml],

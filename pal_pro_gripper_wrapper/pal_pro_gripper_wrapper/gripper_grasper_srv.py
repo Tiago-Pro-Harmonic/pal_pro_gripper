@@ -27,23 +27,7 @@ class GripperGraper(Node):
                          automatically_declare_parameters_from_overrides=True)
 
         # Init Params - defaults
-        self.last_state = None
-        self.controller_name = self.get_parameter(
-            'controller_name').get_parameter_value().string_array_value[0]
-        self.real_joint_names = self.get_parameter(
-            'real_joint_names').get_parameter_value().string_array_value
-        self.max_position_error = self.get_parameter(
-            'max_position_error').get_parameter_value().double_value
-        self.timeout = self.get_parameter(
-            'timeout').get_parameter_value().double_value
-        self.rate = self.get_parameter(
-            'rate').get_parameter_value().double_value
-        self.tolerance = self.get_parameter(
-            'tolerance').get_parameter_value().double_value
-        self.opening_time = self.get_parameter(
-            'opening_time').get_parameter_value().double_value
-        self.closing_time = self.get_parameter(
-            'closing_time').get_parameter_value().double_value
+        self.init_params()
 
         # Subs to gripper state
         self.state_sub = self.create_subscription(
@@ -64,6 +48,7 @@ class GripperGraper(Node):
         self.get_logger().info("Offering grasp srv on: " + str(
             self.grasp_srv.srv_name))
 
+        # Releasing srv to offer
         self.release_srv = self.create_service(
             Empty, f'/{self.controller_name}/release', self.open_cb)
         self.get_logger().info("Offering release srv on: " + str(
@@ -73,10 +58,6 @@ class GripperGraper(Node):
         self.pub_grasp_state = self.create_publisher(Bool, 'is_grasped', 10)
         self.get_logger().info("Publishing on topic: " + str(
             self.pub_grasp_state.topic_name))
-
-        self.is_grasped = Bool()
-        self.on_optimal_close = False
-        self.on_optimal_open = False
 
         self.get_logger().info("Initialized. Ready..")
 
@@ -96,26 +77,27 @@ class GripperGraper(Node):
         self.pub_grasp_state.publish(self.is_grasped)
 
     def open_cb(self, req: Empty.Request, res: Empty.Response) -> Empty.Response:
-        self.get_logger().debug("Recieved open request")
+        self.get_logger().info("Recieved open request")
         # In any case we open the gripper
-        opening_ammount = [0.0]     # 'open' state for pro-gripper
+        opening_ammount = [self.open_value]     # 'open' state for pro-gripper
 
         # Handle the case if the srv is called again after a successfull grasp
         if not self.on_optimal_open:
             self.send_joint_traj(opening_ammount, self.opening_time)
-            self.on_optimal_close = False
             self.get_clock().sleep_for(Duration(seconds=self.opening_time))
+            self.on_optimal_close = False
+            self.on_optimal_open = True
 
-        self.get_logger().debug("Gripper opened!")
+        self.get_logger().info("Gripper opened!")
         return res
 
     def grasp_cb(self, req: Empty.Request, res: Empty.Response) -> Empty.Response:
-        self.get_logger().debug("Recieved grasp request")
+        self.get_logger().info("Recieved grasp request")
 
         # Keep closing the gripper until the error of the state reaches
         # max_position_error or any of the gripper joints (or timeout)
         init_time = self.get_clock().now()
-        closing_ammount = [0.8]     # 'close' state for pro-gripper
+        closing_ammount = [self.close_value]     # 'close' state for pro-gripper
 
         # Handle the case if the srv is called again after a successfull grasp
         if not self.on_optimal_close:
@@ -136,7 +118,7 @@ class GripperGraper(Node):
             self.get_logger().info(f"Current error: {current_error}")
 
             if -current_error > self.max_position_error:
-                self.get_logger().debug("Over error joint 0..")
+                self.get_logger().info("Over error joint 0..")
                 closing_ammount = self.get_optimal_close()
                 self.on_optimal_close = True
 
@@ -144,9 +126,10 @@ class GripperGraper(Node):
             self.send_joint_traj(closing_ammount, self.closing_time)
             self.get_clock().sleep_for(Duration(seconds=self.closing_time))
 
-        self.get_logger().debug("Gripper closed!")
+        self.get_logger().info("Gripper closed!")
         return res
 
+    # Get optimal value to close the gripper to not let the joint stress in case of grasp
     def get_optimal_close(self) -> list[float]:
         optimal_0 = self.last_state.actual.positions[0] - self.max_position_error
         self.get_logger().info(f"Optimal close: {optimal_0}")
@@ -163,6 +146,34 @@ class GripperGraper(Node):
         self.get_logger().info("Sending traj" + str(jt))
         self.cmd_pub.publish(jt)
         return
+
+    def init_params(self) -> None:
+        self.last_state = None
+        self.controller_name = self.get_parameter(
+            'controller_name').get_parameter_value().string_array_value[0]
+        self.real_joint_names = self.get_parameter(
+            'real_joint_names').get_parameter_value().string_array_value
+        self.max_position_error = self.get_parameter(
+            'max_position_error').get_parameter_value().double_value
+        self.timeout = self.get_parameter(
+            'timeout').get_parameter_value().double_value
+        self.tolerance = self.get_parameter(
+            'tolerance').get_parameter_value().double_value
+        self.opening_time = self.get_parameter(
+            'opening_time').get_parameter_value().double_value
+        self.closing_time = self.get_parameter(
+            'closing_time').get_parameter_value().double_value
+        self.open_value = self.get_parameter(
+            'open_value').get_parameter_value().double_value
+        self.close_value = self.get_parameter(
+            'close_value').get_parameter_value().double_value
+        self.is_grasped = Bool()
+
+        # Define if the gripper grasping without stressing the joint
+        # applying the 'optimal_close' joint value
+        self.on_optimal_close = False
+        # True when it's open, False otherwise
+        self.on_optimal_open = False
 
 
 def main(args=None):

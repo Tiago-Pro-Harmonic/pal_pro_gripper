@@ -8,11 +8,14 @@ gripper_grasper_srv:
       - ${EE_SIDE_PREFIX}_finger_joint
 
     max_position_error: 0.0015
-    timeout: 3.0
-    rate: 1.0
+    timeout: 5.0
     tolerance: 0.0005
 
     # Time for which to open/close the gripper
     opening_time: 0.5
-    closing_time: 2.0
+    closing_time: 1.8
+
+    # Open/closed joint value for pal-pro-gripper
+    open_value: 0.0
+    close_value: 0.8
 
