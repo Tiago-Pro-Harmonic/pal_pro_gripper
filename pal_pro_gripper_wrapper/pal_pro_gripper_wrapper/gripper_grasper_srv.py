@@ -21,14 +21,46 @@ from std_srvs.srv import Empty
 from std_msgs.msg import Bool
 
 
-class GripperGraper(Node):
+class GripperGrasper(Node):
     def __init__(self) -> None:
         super().__init__('gripper_grasper_srv',
                          automatically_declare_parameters_from_overrides=True)
 
-        # Init Params - defaults
+        # Init Params and Subscriptions - defaults
         self.init_params()
+        self.init_subscriptions()
 
+        self.get_logger().info("Initialized. Ready..")
+
+    def init_params(self) -> None:
+        self.last_state = None
+        self.controller_name = self.get_parameter(
+            'controller_name').get_parameter_value().string_value
+        self.real_joint_names = self.get_parameter(
+            'real_joint_names').get_parameter_value().string_array_value
+        self.max_position_error = self.get_parameter(
+            'max_position_error').get_parameter_value().double_value
+        self.timeout = self.get_parameter(
+            'timeout').get_parameter_value().double_value
+        self.tolerance = self.get_parameter(
+            'tolerance').get_parameter_value().double_value
+        self.opening_time = self.get_parameter(
+            'opening_time').get_parameter_value().double_value
+        self.closing_time = self.get_parameter(
+            'closing_time').get_parameter_value().double_value
+        self.open_value = self.get_parameter(
+            'open_value').get_parameter_value().double_array_value
+        self.close_value = self.get_parameter(
+            'close_value').get_parameter_value().double_array_value
+        self.is_grasped = Bool()
+
+        # Define if the gripper grasping without stressing the joint
+        # applying the 'optimal_close' joint value
+        self.has_grasped_object = False
+        # True when it's open, False otherwise
+        self.is_open = False
+
+    def init_subscriptions(self) -> None:
         # Subs to gripper state
         self.state_sub = self.create_subscription(
             JointTrajectoryControllerState, f'/{self.controller_name}/controller_state',
@@ -59,17 +91,15 @@ class GripperGraper(Node):
         self.get_logger().info("Publishing on topic: " + str(
             self.pub_grasp_state.topic_name))
 
-        self.get_logger().info("Initialized. Ready..")
-
     def state_cb(self, msg: JointTrajectoryControllerState) -> None:
         self.last_state = msg
 
         # Check if it's grasping or not
-        if self.on_optimal_close:
+        if self.has_grasped_object:
             self.is_grasped.data = True
             if -self.last_state.error.positions[0] < self.tolerance:
                 self.is_grasped.data = False
-                self.on_optimal_close = False
+                self.has_grasped_object = False
         else:
             self.is_grasped.data = False
 
@@ -78,15 +108,14 @@ class GripperGraper(Node):
 
     def open_cb(self, req: Empty.Request, res: Empty.Response) -> Empty.Response:
         self.get_logger().info("Recieved open request")
-        # In any case we open the gripper
-        opening_ammount = [self.open_value]     # 'open' state for pro-gripper
 
+        # In any case we open the gripper
         # Handle the case if the srv is called again after a successfull grasp
-        if not self.on_optimal_open:
-            self.send_joint_traj(opening_ammount, self.opening_time)
+        if not self.is_open:
+            self.send_joint_traj(self.open_value, self.opening_time)
             self.get_clock().sleep_for(Duration(seconds=self.opening_time))
-            self.on_optimal_close = False
-            self.on_optimal_open = True
+            self.has_grasped_object = False
+            self.is_open = True
 
         self.get_logger().info("Gripper opened!")
         return res
@@ -97,18 +126,17 @@ class GripperGraper(Node):
         # Keep closing the gripper until the error of the state reaches
         # max_position_error or any of the gripper joints (or timeout)
         init_time = self.get_clock().now()
-        closing_ammount = [self.close_value]     # 'close' state for pro-gripper
 
         # Handle the case if the srv is called again after a successfull grasp
-        if not self.on_optimal_close:
-            self.get_logger().info("Closing: " + str(closing_ammount))
-            self.send_joint_traj(closing_ammount, self.closing_time)
-            self.on_optimal_open = False
+        if not self.has_grasped_object:
+            self.get_logger().info("Closing: " + str(self.close_value))
+            self.send_joint_traj(self.close_value, self.closing_time)
+            self.is_open = False
             self.get_clock().sleep_for(Duration(seconds=self.closing_time))
 
         while rclpy.ok() and (
             self.get_clock().now() - init_time) < Duration(
-                seconds=self.timeout) and not self.on_optimal_close:
+                seconds=self.timeout) and not self.has_grasped_object:
 
             if self.last_state is None:
                 self.get_logger().warn("Waiting for gripper state...")
@@ -119,11 +147,11 @@ class GripperGraper(Node):
 
             if -current_error > self.max_position_error:
                 self.get_logger().info("Over error joint 0..")
-                closing_ammount = self.get_optimal_close()
-                self.on_optimal_close = True
+                self.close_value = self.get_optimal_close()
+                self.has_grasped_object = True
 
-            self.get_logger().info("Closing: " + str(closing_ammount))
-            self.send_joint_traj(closing_ammount, self.closing_time)
+            self.get_logger().info("Closing: " + str(self.close_value))
+            self.send_joint_traj(self.close_value, self.closing_time)
             self.get_clock().sleep_for(Duration(seconds=self.closing_time))
 
         self.get_logger().info("Gripper closed!")
@@ -147,38 +175,10 @@ class GripperGraper(Node):
         self.cmd_pub.publish(jt)
         return
 
-    def init_params(self) -> None:
-        self.last_state = None
-        self.controller_name = self.get_parameter(
-            'controller_name').get_parameter_value().string_array_value[0]
-        self.real_joint_names = self.get_parameter(
-            'real_joint_names').get_parameter_value().string_array_value
-        self.max_position_error = self.get_parameter(
-            'max_position_error').get_parameter_value().double_value
-        self.timeout = self.get_parameter(
-            'timeout').get_parameter_value().double_value
-        self.tolerance = self.get_parameter(
-            'tolerance').get_parameter_value().double_value
-        self.opening_time = self.get_parameter(
-            'opening_time').get_parameter_value().double_value
-        self.closing_time = self.get_parameter(
-            'closing_time').get_parameter_value().double_value
-        self.open_value = self.get_parameter(
-            'open_value').get_parameter_value().double_value
-        self.close_value = self.get_parameter(
-            'close_value').get_parameter_value().double_value
-        self.is_grasped = Bool()
-
-        # Define if the gripper grasping without stressing the joint
-        # applying the 'optimal_close' joint value
-        self.on_optimal_close = False
-        # True when it's open, False otherwise
-        self.on_optimal_open = False
-
 
 def main(args=None):
     rclpy.init()
-    gg = GripperGraper()
+    gg = GripperGrasper()
     rclpy.spin(gg)
 
 
