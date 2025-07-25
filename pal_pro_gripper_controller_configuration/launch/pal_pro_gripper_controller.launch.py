@@ -64,6 +64,7 @@ def setup_grasp_checker(context: LaunchContext):
 
     grasp_check_srv = Node(
         package='pal_pro_gripper_wrapper',
+        name=f'{ee_prefix}_grasper_srv',
         executable='gripper_grasper_srv',
         output='screen',
         emulate_tty=True,
