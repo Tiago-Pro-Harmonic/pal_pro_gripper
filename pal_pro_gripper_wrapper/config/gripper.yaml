@@ -1,4 +1,4 @@
-gripper_grasper_srv:
+${EE_SIDE_PREFIX}_grasper_srv:
   ros__parameters:
     # The name of the controller,
     controller_name: ${EE_SIDE_PREFIX}_controller
@@ -6,13 +6,13 @@ gripper_grasper_srv:
     real_joint_names: 
       - ${EE_SIDE_PREFIX}_finger_joint
 
-    max_position_error: 0.0015
-    timeout: 5.0
-    tolerance: 0.0005
+    max_position_error: 0.15
+    timeout: 4.0
+    tolerance: 0.005
 
     # Time for which to open/close the gripper
     opening_time: 0.5
-    closing_time: 1.8
+    closing_time: 1.5
 
     # Open/closed joint value for pal-pro-gripper
     open_value: [0.0]
