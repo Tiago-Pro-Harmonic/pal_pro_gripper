@@ -44,8 +44,6 @@ class GripperGrasper(Node):
             'max_position_error').get_parameter_value().double_value
         self.timeout = self.get_parameter(
             'timeout').get_parameter_value().double_value
-        self.tolerance = self.get_parameter(
-            'tolerance').get_parameter_value().double_value
         self.opening_time = self.get_parameter(
             'opening_time').get_parameter_value().double_value
         self.closing_time = self.get_parameter(
@@ -100,13 +98,7 @@ class GripperGrasper(Node):
         self.last_state = msg
 
         # Check if it's grasping or not
-        if self.has_grasped_object:
-            self.is_grasped.data = True
-            if self.last_state.error.positions[0] > self.tolerance:
-                self.is_grasped.data = False
-                self.has_grasped_object = False
-        else:
-            self.is_grasped.data = False
+        self.is_grasped.data = True if self.has_grasped_object else False
 
         # Publishing state
         self.pub_grasp_state.publish(self.is_grasped)
@@ -139,34 +131,32 @@ class GripperGrasper(Node):
             self.get_clock().sleep_for(Duration(seconds=self.closing_time))
             self.is_open = False
 
-        while rclpy.ok() and (
-            self.get_clock().now() - init_time) < Duration(
-                seconds=self.timeout) and not self.has_grasped_object:
+        while rclpy.ok() and (self.get_clock().now()-init_time) < Duration(seconds=self.timeout):
 
             if self.last_state is None:
                 self.get_logger().warn("Waiting for gripper state...")
                 continue
 
             current_error = self.last_state.error.positions[0]
-            self.get_logger().info(f"Current abs error: {current_error} - T: {self.max_position_error}")
 
+            # If the position error is > than a treshold means something
+            # is within the gripper: it grasped
             if abs(current_error) > self.max_position_error:
-                self.get_logger().info("Over error joint 0..")
-                close_val = self.get_optimal_close()
                 self.has_grasped_object = True
+                close_val = self.get_optimal_close()
                 self.send_joint_traj(close_val, self.closing_time)
-
-            # self.get_clock().sleep_for(Duration(seconds=0.1))
+                break
 
         self.get_logger().info("Gripper closed!\n")
         return res
 
     # Get optimal value to close the gripper to not let the joint stress in case of grasp
     def get_optimal_close(self) -> list[float]:
-        optimal_0 = self.last_state.feedback.positions[0] - self.last_state.error.positions[0]
-        optimal_0 = min(max(self.open_value[0], optimal_0), self.close_value[0])
-        self.get_logger().info(f"Optimal close: {optimal_0}")
-        return [optimal_0]
+        optimal_close = self.close_value[0] - self.last_state.error.positions[0]
+        # range: [open_value, close_value]
+        optimal_close = min(max(self.open_value[0], optimal_close), self.close_value[0])
+        self.get_logger().info(f"Optimal close: {optimal_close}")
+        return [optimal_close]
 
     def send_joint_traj(self, j_positions: list[float], exec_time: float) -> None:
         jt = JointTrajectory()
