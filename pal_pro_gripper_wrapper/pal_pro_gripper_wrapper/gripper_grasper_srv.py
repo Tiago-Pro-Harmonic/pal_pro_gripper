@@ -89,17 +89,15 @@ class GripperGrasper(Node):
 
         # Publish the grasp state each 'rate' secons to know if an object is grasped or not
         self.pub_grasp_state = self.create_publisher(Bool, 'is_grasped', 10)
-        self.pub_state_timer = self.create_timer(self.rate, self.publish_state)
+        self.pub_state_timer = self.create_timer(self.rate, self.publish_grasping_state)
         self.get_logger().info(
             f"Publishing on topic: {self.pub_grasp_state.topic_name} each {self.rate} seconds.")
 
     def state_cb(self, msg: JointTrajectoryControllerState) -> None:
         self.last_state = msg
 
-        # Check if it's grasping or not
-        self.is_grasped.data = True if self.has_grasped_object else False
-
-    def publish_state(self) -> None:
+    def publish_grasping_state(self) -> None:
+        self.is_grasped.data = self.has_grasped_object
         # Publishing state
         self.pub_grasp_state.publish(self.is_grasped)
 
