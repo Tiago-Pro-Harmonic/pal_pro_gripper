@@ -3,7 +3,7 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     # The name of the controller,
     controller_name: ${EE_SIDE_PREFIX}_controller
     # Real joints that will be commanded 
-    real_joint_names: 
+    joint_names: 
       - ${EE_SIDE_PREFIX}_finger_joint
 
     # if the desired position differs by the actual position by
@@ -12,6 +12,9 @@ ${EE_SIDE_PREFIX}_grasper_srv:
 
     # Time for which the GripperGrasper analyzes the error (in s)
     timeout: 4.0
+
+    # Publishing rate (of grasp state) - (in s)
+    rate: 2.0
 
     # Time for which to open/close the gripper
     opening_time: 0.5
