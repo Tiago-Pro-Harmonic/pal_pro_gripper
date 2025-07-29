@@ -38,8 +38,8 @@ class GripperGrasper(Node):
         self.last_state = None
         self.controller_name = self.get_parameter(
             'controller_name').get_parameter_value().string_value
-        self.real_joint_names = self.get_parameter(
-            'real_joint_names').get_parameter_value().string_array_value
+        self.joint_names = self.get_parameter(
+            'joint_names').get_parameter_value().string_array_value
         self.max_position_error = self.get_parameter(
             'max_position_error').get_parameter_value().double_value
         self.timeout = self.get_parameter(
@@ -52,7 +52,9 @@ class GripperGrasper(Node):
             'open_value').get_parameter_value().double_array_value
         self.close_value = self.get_parameter(
             'close_value').get_parameter_value().double_array_value
+        self.rate = self.get_parameter('rate').get_parameter_value().double_value
         self.is_grasped = Bool()
+        self.is_grasped.data = False
 
         # Define if the gripper grasping without stressing the joint
         # applying the 'optimal_close' joint value
@@ -69,30 +71,27 @@ class GripperGrasper(Node):
         self.state_sub = self.create_subscription(
             JointTrajectoryControllerState, f'/{self.controller_name}/controller_state',
             self.state_cb, qos_profile=1, callback_group=self.cb_group)
-        self.get_logger().info("Subscribed to topic: " + str(
-            self.state_sub.topic_name))
+        self.get_logger().info(f"Subscribed to topic: {self.state_sub.topic_name}")
         # Publisher on the gripper topic
         self.cmd_pub = self.create_publisher(
             JointTrajectory, f'/{self.controller_name}/joint_trajectory', 10)
-        self.get_logger().info("Publishing on topic: " + str(
-            self.cmd_pub.topic_name))
+        self.get_logger().info(f"Publishing on topic: {self.cmd_pub.topic_name}")
 
         # Graspng srv to offer
         self.grasp_srv = self.create_service(
             Empty, f'/{self.controller_name}/grasp', self.grasp_cb, callback_group=self.cb_group)
-        self.get_logger().info("Offering grasp srv on: " + str(
-            self.grasp_srv.srv_name))
+        self.get_logger().info(f"Offering grasp srv on: {self.grasp_srv.srv_name}")
 
         # Releasing srv to offer
         self.release_srv = self.create_service(
             Empty, f'/{self.controller_name}/release', self.open_cb)
-        self.get_logger().info("Offering release srv on: " + str(
-            self.release_srv.srv_name))
+        self.get_logger().info(f"Offering release srv on: {self.release_srv.srv_name}")
 
-        # Publish a boolean to know if an object is grasped or not
+        # Publish the grasp state each 'rate' secons to know if an object is grasped or not
         self.pub_grasp_state = self.create_publisher(Bool, 'is_grasped', 10)
-        self.get_logger().info("Publishing on topic: " + str(
-            self.pub_grasp_state.topic_name))
+        self.pub_state_timer = self.create_timer(self.rate, self.publish_state)
+        self.get_logger().info(
+            f"Publishing on topic: {self.pub_grasp_state.topic_name} each {self.rate} seconds.")
 
     def state_cb(self, msg: JointTrajectoryControllerState) -> None:
         self.last_state = msg
@@ -100,6 +99,7 @@ class GripperGrasper(Node):
         # Check if it's grasping or not
         self.is_grasped.data = True if self.has_grasped_object else False
 
+    def publish_state(self) -> None:
         # Publishing state
         self.pub_grasp_state.publish(self.is_grasped)
 
@@ -160,7 +160,7 @@ class GripperGrasper(Node):
 
     def send_joint_traj(self, j_positions: list[float], exec_time: float) -> None:
         jt = JointTrajectory()
-        jt.joint_names = self.real_joint_names
+        jt.joint_names = self.joint_names
         p = JointTrajectoryPoint()
         p.positions = j_positions
         p.time_from_start = Duration(seconds=exec_time).to_msg()
