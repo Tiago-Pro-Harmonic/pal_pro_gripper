@@ -14,7 +14,7 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     timeout: 4.0
 
     # Publishing rate (of grasp state) - (in s)
-    rate: 2.0
+    rate: 1.0
 
     # Time for which to open/close the gripper
     opening_time: 0.5
