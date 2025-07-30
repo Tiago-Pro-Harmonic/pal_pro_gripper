@@ -31,8 +31,7 @@ class GripperGrasper(Node):
         # Init Params and Subscriptions - defaults
         self.init_params()
         self.init_subscriptions()
-
-        self.get_logger().info("Initialized. Ready..")
+        self.get_logger().info(f"{self.get_name()} initialized. Ready..")
 
     def init_params(self) -> None:
         self.last_state = None
@@ -79,16 +78,16 @@ class GripperGrasper(Node):
 
         # Graspng srv to offer
         self.grasp_srv = self.create_service(
-            Empty, f'/{self.controller_name}/grasp', self.grasp_cb, callback_group=self.cb_group)
+            Empty, f'/{self.get_name()}/grasp', self.grasp_cb, callback_group=self.cb_group)
         self.get_logger().info(f"Offering grasp srv on: {self.grasp_srv.srv_name}")
 
         # Releasing srv to offer
         self.release_srv = self.create_service(
-            Empty, f'/{self.controller_name}/release', self.open_cb)
+            Empty, f'/{self.get_name()}/release', self.open_cb)
         self.get_logger().info(f"Offering release srv on: {self.release_srv.srv_name}")
 
         # Publish the grasp state each 'rate' secons to know if an object is grasped or not
-        self.pub_grasp_state = self.create_publisher(Bool, 'is_grasped', 10)
+        self.pub_grasp_state = self.create_publisher(Bool, f'{self.get_name()}/is_grasped', 10)
         self.pub_state_timer = self.create_timer(self.rate, self.publish_grasping_state)
         self.get_logger().info(
             f"Publishing on topic: {self.pub_grasp_state.topic_name} each {self.rate} seconds.")
