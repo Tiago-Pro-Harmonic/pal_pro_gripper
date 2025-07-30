@@ -1,5 +1,4 @@
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import find_packages, setup, glob
 import os
 package_name = 'pal_pro_gripper_wrapper'
 
@@ -12,6 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'config'), ['config/gripper.yaml']),
+        (os.path.join('share', package_name, 'launch'), glob.glob('launch/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
