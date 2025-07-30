@@ -18,55 +18,23 @@ from dataclasses import dataclass
 from ament_index_python.packages import get_package_share_directory
 from launch_pal.param_utils import parse_parametric_yaml
 from launch_pal.arg_utils import LaunchArgumentsBase
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.conditions import IfCondition
-from launch.substitutions import PythonExpression, LaunchConfiguration
+from launch_pal.robot_arguments import CommonArgs
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch.actions import OpaqueFunction
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from tiago_pro_description.launch_arguments import TiagoProArgs
 
 
 @dataclass(frozen=True)
 class LaunchArguments(LaunchArgumentsBase):
 
-    arm_type_right: DeclareLaunchArgument = TiagoProArgs.arm_type_right
-    arm_type_left: DeclareLaunchArgument = TiagoProArgs.arm_type_left
-    end_effector_right: DeclareLaunchArgument = TiagoProArgs.end_effector_right
-    end_effector_left: DeclareLaunchArgument = TiagoProArgs.end_effector_left
-
-    side: DeclareLaunchArgument = DeclareLaunchArgument(
-        name='side',
-        default_value='',
-        description='side of the end effector, can be left empty')
+    side: DeclareLaunchArgument = CommonArgs.side
 
 
-def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
+def declare_actions(context, *args, **kwargs):
 
-    # Add controller of left gripper
-    launch_description.add_action(OpaqueFunction(
-        function=set_side_gripper, args=['left'],
-        condition=IfCondition(
-            PythonExpression(
-                ["'", LaunchConfiguration('end_effector_left'), "' != 'no-end-effector' and '",
-                 LaunchConfiguration('arm_type_left'), "' != 'no-arm'"]
-            )
-        )))
-
-    # Add controller of right gripper
-    launch_description.add_action(OpaqueFunction(
-        function=set_side_gripper, args=['right'],
-        condition=IfCondition(
-            PythonExpression(
-                ["'", LaunchConfiguration('end_effector_right'), "' != 'no-end-effector' and '",
-                 LaunchConfiguration('arm_type_right'), "' != 'no-arm'"]
-            )
-        )))
-
-    return
-
-
-def set_side_gripper(context, side='', *args, **kwargs):
-
+    side = LaunchConfiguration('side').perform(context)
     ee_prefix = "gripper"
     if side:
         ee_prefix = f"gripper_{side}"
@@ -100,6 +68,6 @@ def generate_launch_description():
 
     launch_arguments.add_to_launch_description(ld)
 
-    declare_actions(ld, launch_arguments)
+    ld.add_action(OpaqueFunction(function=declare_actions))
 
     return ld

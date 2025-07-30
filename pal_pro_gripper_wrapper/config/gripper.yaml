@@ -13,7 +13,7 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     # Time for which the GripperGrasper analyzes the error (in s)
     timeout: 4.0
 
-    # Publishing rate (of grasp state) - (in s)
+    # Publishing rate (of grasp state) - (in hz)
     rate: 1.0
 
     # Time for which to open/close the gripper
