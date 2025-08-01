@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2025-08-01)
+------------------
 * letting the srv to be launched as module
 * let not it spawn 2 same controllers
 * update deps

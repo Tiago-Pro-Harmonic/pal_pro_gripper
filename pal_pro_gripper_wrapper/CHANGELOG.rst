@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2025-08-01)
+------------------
 * Update package.xml
 * logic managed by gripper_grasper.launch in tiago_pro_bringup
 * using the node name for topic/srvs names
