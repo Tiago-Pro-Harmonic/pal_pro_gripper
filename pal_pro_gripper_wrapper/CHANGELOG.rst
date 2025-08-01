@@ -1,0 +1,89 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package pal_pro_gripper_wrapper
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Update package.xml
+* logic managed by gripper_grasper.launch in tiago_pro_bringup
+* using the node name for topic/srvs names
+* publish more often
+* adding launc
+* letting the srv to be launched as module
+* more specific names
+* adding timer to publish state
+* adding rate param
+* clean code
+* comments
+* update deps
+* let callbacks run concurrently
+* tuned params
+* improving params handling
+* cleaning
+* setting up as python pkg
+* Contributors: David ter Kuile, Matteo Villani
+
+1.5.2 (2025-06-26)
+------------------
+
+1.5.1 (2025-03-31)
+------------------
+
+1.5.0 (2025-01-16)
+------------------
+
+1.4.0 (2024-11-05)
+------------------
+
+1.3.0 (2024-09-19)
+------------------
+* Gripper std and suggested changes
+* Contributors: oscarmartinez
+
+1.2.0 (2024-08-09)
+------------------
+
+1.1.0 (2024-08-06)
+------------------
+
+1.0.6 (2024-07-19)
+------------------
+
+1.0.5 (2024-04-23)
+------------------
+
+1.0.4 (2024-03-21)
+------------------
+
+1.0.3 (2024-03-11)
+------------------
+
+1.0.2 (2024-03-06)
+------------------
+
+1.0.1 (2024-01-31)
+------------------
+
+1.0.0 (2024-01-29)
+------------------
+* migration of CMakeLists.txt and package.xml to ros2
+* Contributors: ileniaperrella
+
+0.0.3 (2023-10-23)
+------------------
+* Updated changelogs
+* Remove gazebo package + tune grasp service
+* Contributors: Jordan Palacios, thomaspeyrucain
+
+0.0.2 (2023-07-11)
+------------------
+* Update Changelog
+* Contributors: David ter Kuile
+
+0.0.1 (2023-07-03)
+------------------
+* Generate changelog
+* Update mimicjoint and typos
+* add gripper wrapper and grasping service
+* Add controller_config and controller_config gazebo
+* Contributors: David ter Kuile

@@ -2,6 +2,16 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* letting the srv to be launched as module
+* let not it spawn 2 same controllers
+* update deps
+* cleaning
+* solving
+* pal_pro_gripper_grasp_check implemented in launch file
+* Contributors: Matteo Villani
+
 1.5.2 (2025-06-26)
 ------------------
 
