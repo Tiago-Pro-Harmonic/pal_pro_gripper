@@ -2,6 +2,14 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'tpe/update_gripper_range' into 'humble-devel'
+  Update range of gripper
+  See merge request robots/pal_pro_gripper!28
+* Update range of gripper
+* Contributors: thomaspeyrucain
+
 1.6.0 (2025-08-01)
 ------------------
 
