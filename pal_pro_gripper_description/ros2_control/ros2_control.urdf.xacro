@@ -23,7 +23,12 @@
     <ros2_control name="ros2_control_pal_pro_gripper_system" type="system">
       <hardware>
         <xacro:if value="${use_sim_time}">
-          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+          <xacro:if value="${mujoco and not mj_simulate}"> 
+            <plugin>mujoco_ros2_control/MujocoSystem</plugin>
+          </xacro:if>
+          <xacro:unless value="${mujoco}">
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+          </xacro:unless>
         </xacro:if>
         <xacro:unless value="${use_sim_time}">
           <plugin>robot_control/RobotControl</plugin>
