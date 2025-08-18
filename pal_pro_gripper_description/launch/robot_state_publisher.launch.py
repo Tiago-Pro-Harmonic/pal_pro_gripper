@@ -32,6 +32,9 @@ from pal_pro_gripper_description.launch_arguments import PalProGripperArgs
 class LaunchArguments(LaunchArgumentsBase):
     tool_changer: DeclareLaunchArgument = PalProGripperArgs.tool_changer
     use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
+    mujoco: DeclareLaunchArgument = CommonArgs.mujoco
+    mj_control: DeclareLaunchArgument = CommonArgs.mj_control
+    mj_simulate: DeclareLaunchArgument = CommonArgs.mj_simulate
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
@@ -72,6 +75,9 @@ def create_robot_description_param(context):
     xacro_input_args = {
         'use_sim_time': read_launch_argument('use_sim_time', context),
         'tool_changer': read_launch_argument('tool_changer', context),
+        'mujoco': read_launch_argument("mujoco", context),
+        'mj_control': read_launch_argument("mj_control", context),
+        'mj_simulate': read_launch_argument("mj_simulate", context),
     }
     robot_description = load_xacro(xacro_file_path, xacro_input_args)
 
