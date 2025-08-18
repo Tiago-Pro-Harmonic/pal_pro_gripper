@@ -11,10 +11,20 @@
     <!-- false, true -->
     <xacro:arg name="use_sim_time" default="False"/>
 
+     <!-- Mujoco tags -->
+    <xacro:arg name="mujoco" default="false" />
+    <xacro:arg name="mj_simulate" default="false" />
+    <xacro:arg name="mj_control" default="false" />
+
     <!-- PROPERTIES -->
     <xacro:property name="tool_changer" value="$(arg tool_changer)" />
     <xacro:property name="use_sim_time" value="$(arg use_sim_time)" />
     <xacro:property name="name" value="gripper"/>
+
+    <!-- Mujoco properties -->
+    <xacro:property name="mujoco" value="$(arg mujoco)" /> 
+    <xacro:property name="mj_simulate" value="$(arg mj_simulate)" />
+    <xacro:property name="mj_controller" value="${mj_control if mj_control != 'false' else 'no_controller'}"/>
 
     <!-- INCLUDES -->
 
@@ -31,6 +41,9 @@
     <!-- Gazebo plugins -->
     <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
 
+    <!-- MUJOCO -->
+    <xacro:include filename="$(find pal_pro_gripper_description)/mujoco/mj_tags.xacro" />
+
     <!-- ROBOT DEFINITION -->
 
     <link name="world"/>
@@ -38,6 +51,26 @@
     <xacro:pal_pro_gripper tool_changer="${tool_changer}" name="${name}" parent="world">
         <origin xyz="0.0 0.0 0.08" rpy="0 0 0" />
     </xacro:pal_pro_gripper>
+
+    <xacro:if value="${mujoco}">
+        <mujoco> 
+            <!-- Mujoco environment -->
+            <xacro:mj_gripper_common/>
+
+            <!-- Contact-->
+            <xacro:mj_gripper_contact side="gripper"/>
+
+            <!-- Actuator-->
+            <xacro:if value="${mj_simulate}">
+                <!-- Equality-->
+                <xacro:mj_gripper_equality side="gripper" anchor_r="0.014 -0.0015 0" anchor_l="0.014 -0.001 0"/>
+                
+                <actuator>
+                    <xacro:mj_gripper_actuators side="gripper" reflect="1"/>
+                </actuator>
+            </xacro:if>
+        </mujoco>  
+    </xacro:if>
 
     <!-- ROS 2 Control -->
     <xacro:pal_pro_gripper_ros2_control />
