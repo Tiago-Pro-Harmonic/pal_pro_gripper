@@ -23,7 +23,9 @@
 
 
     <xacro:macro name="mj_gripper_actuators" params="side reflect">
-        <position name="${side}_position" joint="${side}_inner_finger_left_joint" kp="100" ctrlrange=" 0 0.802851 " />
+        <xacro:if value="${mj_controller == 'position' or mj_controller == 'motor'}">
+            <position name="${side}_position" joint="${side}_inner_finger_left_joint" kp="100" ctrlrange=" 0 0.802851 " />
+        </xacro:if>
     </xacro:macro>
 
 
@@ -36,9 +38,9 @@
 
     
     <xacro:macro name="mj_gripper_equality" params="side anchor_r anchor_l" >
-        <connect name="${side}_r" body1="${side}_fingertip_right_link" body2="${side}_outer_finger_right_link" anchor="${anchor_r}" solref="0.005" solimp="0.95 0.99"/>
-        <connect name="${side}_l" body1="${side}_fingertip_left_link" body2="${side}_outer_finger_left_link" anchor="${anchor_l}" solref="0.005" solimp="0.95 0.99"/>
-        <joint joint1="${side}_inner_finger_left_joint" joint2="${side}_inner_finger_right_joint" polycoef="0 1 0 0 0" solref="0.005" solimp="0.95 0.99"/>  
+        <connect name="${side}_r" body1="${side}_fingertip_right_link" body2="${side}_outer_finger_right_link"  active="true" anchor="${anchor_r}" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+        <connect name="${side}_l" body1="${side}_fingertip_left_link" body2="${side}_outer_finger_left_link" active="true"  anchor="${anchor_l}" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+        <joint joint1="${side}_inner_finger_left_joint" joint2="${side}_inner_finger_right_joint" polycoef="0 1 0 0 0" solref="0.005 1" solimp="0.95 0.99 0.001"/>  
     </xacro:macro>
 
     
