@@ -11,10 +11,10 @@
     <!-- false, true -->
     <xacro:arg name="use_sim_time" default="False"/>
 
-     <!-- Mujoco tags -->
-    <xacro:arg name="mujoco" default="false" />
-    <xacro:arg name="mj_simulate" default="false" />
+     <!-- Mujoco args -->
+    <xacro:arg name="sim_type" default="gazebo" />
     <xacro:arg name="mj_control" default="false" />
+    <xacro:arg name="mj_world_name" default="floor" />
 
     <!-- PROPERTIES -->
     <xacro:property name="tool_changer" value="$(arg tool_changer)" />
@@ -22,9 +22,9 @@
     <xacro:property name="name" value="gripper"/>
 
     <!-- Mujoco properties -->
-    <xacro:property name="mujoco" value="$(arg mujoco)" /> 
-    <xacro:property name="mj_simulate" value="$(arg mj_simulate)" />
-    <xacro:property name="mj_controller" value="${mj_control if mj_control != 'false' else 'no_controller'}"/>
+    <xacro:property name="sim_type" value="$(arg sim_type)" /> 
+    <xacro:property name="mj_control" value="${arg mj_control}"/>
+    <xacro:property name="mj_world_name" value="$(arg mj_world_name)"/>
 
     <!-- INCLUDES -->
 
@@ -41,9 +41,6 @@
     <!-- Gazebo plugins -->
     <xacro:include filename="$(find pal_pro_gripper_description)/gazebo/gazebo.urdf.xacro" />
 
-    <!-- MUJOCO -->
-    <xacro:include filename="$(find pal_pro_gripper_description)/mujoco/mj_tags.xacro" />
-
     <!-- ROBOT DEFINITION -->
 
     <link name="world"/>
@@ -52,21 +49,26 @@
         <origin xyz="0.0 0.0 0.08" rpy="0 0 0" />
     </xacro:pal_pro_gripper>
 
-    <xacro:if value="${mujoco}">
+    <xacro:if value="${sim_type == 'mujoco' or sim_type == 'mujoco-ros2-control'}">
+        
+        <!-- MUJOCO -->
+        <xacro:include filename="$(find pal_pro_gripper_description)/mujoco/mj_tags.xacro" />   
+        <xacro:include filename="$(find pal_mujoco_scenes)/scenes/${mj_world_name}.xacro" />
+        
         <mujoco> 
             <!-- Mujoco environment -->
-            <xacro:mj_gripper_common/>
+            <xacro:mj_common light_target="base_link"/>
 
             <!-- Contact-->
             <xacro:mj_gripper_contact side="gripper"/>
 
             <!-- Actuator-->
-            <xacro:if value="${mj_simulate}">
+            <xacro:if value="${sim_type == 'mujoco'}">
                 <!-- Equality-->
                 <xacro:mj_gripper_equality side="gripper" anchor_r="0.014 -0.0015 0" anchor_l="0.014 -0.001 0"/>
                 
                 <actuator>
-                    <xacro:mj_gripper_actuators side="gripper" reflect="1"/>
+                    <xacro:mj_gripper_actuators name="gripper"/>
                 </actuator>
             </xacro:if>
         </mujoco>  
