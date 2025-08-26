@@ -28,10 +28,9 @@ from dataclasses import dataclass
 class LaunchArguments(LaunchArgumentsBase):
     tool_changer: DeclareLaunchArgument = PalProGripperArgs.tool_changer
     use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
-    mujoco: DeclareLaunchArgument = CommonArgs.mujoco
+    sim_type: DeclareLaunchArgument = CommonArgs.sim_type
     mj_control: DeclareLaunchArgument = CommonArgs.mj_control
-    mj_simulate: DeclareLaunchArgument = CommonArgs.mj_simulate
-
+    mj_world_name: DeclareLaunchArgument = CommonArgs.mj_world_name
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
@@ -48,9 +47,10 @@ def declare_actions(launch_description: LaunchDescription, launch_args: LaunchAr
         paths=['launch', 'robot_state_publisher.launch.py'],
         launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time'),
                           'tool_changer': LaunchConfiguration('tool_changer'),
-                          'mujoco': LaunchConfiguration('mujoco'),
+                          'sim_type': LaunchConfiguration('sim_type'),
                           'mj_control': LaunchConfiguration('mj_control'),
-                          'mj_simulate': LaunchConfiguration('mj_simulate'),})
+                          'mj_world_name': LaunchConfiguration('mj_world_name')
+                          })
 
     launch_description.add_action(robot_state_publisher)
 
