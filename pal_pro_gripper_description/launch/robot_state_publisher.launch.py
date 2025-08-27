@@ -34,7 +34,7 @@ class LaunchArguments(LaunchArgumentsBase):
     use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
     sim_type: DeclareLaunchArgument = CommonArgs.sim_type
     mj_control: DeclareLaunchArgument = CommonArgs.mj_control
-    mj_world_name: DeclareLaunchArgument = CommonArgs.mj_world_name
+    world_name: DeclareLaunchArgument = CommonArgs.world_name
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
@@ -74,9 +74,9 @@ def create_robot_description_param(context):
     xacro_input_args = {
         'use_sim_time': read_launch_argument('use_sim_time', context),
         'tool_changer': read_launch_argument('tool_changer', context),
-        'sim_type': read_launch_argument("sim_type", context),
-        'mj_control': read_launch_argument("mj_control", context),
-        'mj_world_name': read_launch_argument("mj_world_name", context),
+        'sim_type': read_launch_argument('sim_type', context),
+        'mj_control': read_launch_argument('mj_control', context),
+        'world_name': read_launch_argument('world_name', context),
     }
     robot_description = load_xacro(xacro_file_path, xacro_input_args)
 
