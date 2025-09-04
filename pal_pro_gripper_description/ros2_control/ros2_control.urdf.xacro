@@ -16,7 +16,7 @@
  -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="pal_pro_gripper">
 
-  <xacro:macro name="pal_pro_gripper_ros2_control">
+  <xacro:macro name="pal_pro_gripper_ros2_control" params="use_sim_time:=^|false sim_type:=no-simulation">
 
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.ros2_control.xacro" />
 
