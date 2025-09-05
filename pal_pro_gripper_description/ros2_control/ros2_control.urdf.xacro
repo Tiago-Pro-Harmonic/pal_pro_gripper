@@ -16,16 +16,21 @@
  -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="pal_pro_gripper">
 
-  <xacro:macro name="pal_pro_gripper_ros2_control">
+  <xacro:macro name="pal_pro_gripper_ros2_control" params="use_sim_time:=^|false sim_type:=no-simulation">
 
     <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.ros2_control.xacro" />
 
     <ros2_control name="ros2_control_pal_pro_gripper_system" type="system">
       <hardware>
-        <xacro:if value="${use_sim_time}">
-          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        <xacro:if value="$(arg use_sim_time)">
+          <xacro:if value="${sim_type == 'mujoco-ros2-control'}">
+            <plugin>mujoco_ros2_control/MujocoSystem</plugin>
+          </xacro:if>
+          <xacro:if value="${sim_type == 'gazebo'}">
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+          </xacro:if>
         </xacro:if>
-        <xacro:unless value="${use_sim_time}">
+        <xacro:unless value="$(arg use_sim_time)">
           <plugin>robot_control/RobotControl</plugin>
         </xacro:unless>
       </hardware>

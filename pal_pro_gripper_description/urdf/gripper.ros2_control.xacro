@@ -16,9 +16,9 @@ limitations under the License.
 -->
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="ros2_control_pal_pro_gripper" params="name reduction">
+  <xacro:macro name="ros2_control_pal_pro_gripper" params="name reduction sim_type:=no-simulation">
 
-    <xacro:macro name="ros2_control_pal_pro_gripper_mimic_joint" params="mimic_joint_name actuated_joint_name multiplier">
+    <xacro:macro name="ros2_control_pal_pro_gripper_mimic_joint" params="mimic_joint_name actuated_joint_name multiplier sim_type:=no-simulation">
 
       <joint name="${mimic_joint_name}">
         <param name="mimic">${actuated_joint_name}</param>
@@ -47,11 +47,12 @@ limitations under the License.
 
     <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-1"/>
 
-
     <!-- Transmission only set to left finger joint, other joints are passive and mimic this
     joint-->
-    <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.transmission.xacro" />
-    <xacro:pal_pro_gripper_transmission name="${name}_finger"/>
+    <xacro:if value="${sim_type == 'gazebo'}">
+      <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.transmission.xacro" />
+      <xacro:pal_pro_gripper_transmission name="${name}_finger"/>
+    </xacro:if>
 
   </xacro:macro>
 </robot>
