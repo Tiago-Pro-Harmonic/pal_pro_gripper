@@ -2,6 +2,23 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add missing sim_type xacro args
+* changed world and mujoco xacro argument name
+* changed xacro parameter name
+* changed world launch argument name
+* Improved mujoco description structure
+* Improved mujoco launch arguments
+* Restored to original argument implementation
+* Improved mujoco description logic
+* added mujoco_ros2_control command interface
+* added mujoco_ros2_control plugin
+* Added mujoco model description
+* Added mujoco arguments
+* added mj_tags xacro file
+* Contributors: David ter Kuile, Ortisa Poci
+
 1.6.1 (2025-08-05)
 ------------------
 * Merge branch 'tpe/update_gripper_range' into 'humble-devel'

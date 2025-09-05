@@ -2,6 +2,13 @@
 Changelog for package pal_pro_gripper_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* changed world launch argument name
+* Improved mujoco launch arguments
+* Added mujoco arguments
+* Contributors: Ortisa Poci
+
 1.6.1 (2025-08-05)
 ------------------
 
