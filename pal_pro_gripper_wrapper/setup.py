@@ -4,7 +4,7 @@ package_name = 'pal_pro_gripper_wrapper'
 
 setup(
     name=package_name,
-    version='1.6.1',
+    version='1.7.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',

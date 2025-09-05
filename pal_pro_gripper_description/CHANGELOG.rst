@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.0 (2025-09-05)
+------------------
 * Add missing sim_type xacro args
 * changed world and mujoco xacro argument name
 * changed xacro parameter name
