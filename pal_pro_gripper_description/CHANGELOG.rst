@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix logic error for transmission
+* Contributors: David ter Kuile
+
 1.7.0 (2025-09-05)
 ------------------
 * Add missing sim_type xacro args
