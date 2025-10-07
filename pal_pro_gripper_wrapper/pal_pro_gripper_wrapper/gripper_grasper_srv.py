@@ -99,7 +99,8 @@ class GripperGrasper(Node):
                 idx = i
                 break
         if idx == -1:
-            self.get_logger().error(f"Gripper joint: {self.joint_names} not present in /joint_states topic.")
+            self.get_logger().error(f"Gripper joint: {self.joint_names} not present in "
+                                    "/joint_states topic.")
             rclpy.shutdown()
 
         self.last_state = msg.position[idx]
