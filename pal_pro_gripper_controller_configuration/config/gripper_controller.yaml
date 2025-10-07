@@ -1,7 +1,7 @@
 ${EE_SIDE_PREFIX}_controller:
   ros__parameters:
     type: joint_trajectory_controller/JointTrajectoryController
-    update_rate: 100
+    update_rate: 1000
     joints:
       - ${EE_SIDE_PREFIX}_finger_joint
     command_interfaces:
