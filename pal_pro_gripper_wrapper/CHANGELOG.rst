@@ -2,6 +2,12 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* for the pipeline :/
+* change topic to retrieve joint position
+* Contributors: Matteo Villani
+
 1.7.1 (2025-09-08)
 ------------------
 

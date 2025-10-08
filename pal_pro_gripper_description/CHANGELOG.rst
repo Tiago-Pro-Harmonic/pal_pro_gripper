@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.7.1 (2025-09-08)
 ------------------
 * Fix logic error for transmission

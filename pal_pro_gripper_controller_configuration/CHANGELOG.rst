@@ -2,6 +2,12 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* 100 hz to 1khz
+* add update rate
+* Contributors: Matteo Villani
+
 1.7.1 (2025-09-08)
 ------------------
 
