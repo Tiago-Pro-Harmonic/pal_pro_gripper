@@ -28,7 +28,7 @@
     </xacro:macro>
 
     <xacro:macro name="origin_inner_finger_joint" params="reflect offset">
-        <origin xyz="0 ${reflect * 0.013977} ${0.078832 + offset}" rpy="1.5708 0.83776 ${reflect * 1.5708}" />
+        <origin xyz="-0.01482273272 0.00453176142 0.0" rpy="0.0 0.0 0.0" />
     </xacro:macro>
 
     <!-- Outer finger -->
@@ -55,6 +55,33 @@
 
     <xacro:macro name="origin_fingertip_joint" params="reflect">
         <origin xyz="0 0.05 0" rpy="0 0 0" />
+    </xacro:macro>
+
+    <!-- Screw -->
+    <xacro:macro name="inertial_screw_link">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            <mass value="0.02" />
+            <inertia ixx="7.4666667e-07" ixy="0.0" ixz="0.0" iyy="7.4666667e-07" iyz="0.0" izz="1.6e-07" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="origin_screw_joint" params="reflect">
+        <origin xyz="-0.0178 0.0088 0.0" rpy="0 0 0"/>    
+    </xacro:macro>
+
+
+    <!-- Base finger -->
+    <xacro:macro name="inertial_base_finger_link">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            <mass value="0.02" />
+            <inertia ixx="7.4666667e-07" ixy="0.0" ixz="0.0" iyy="7.4666667e-07" iyz="0.0" izz="1.6e-07" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="origin_base_finger_joint" params="reflect">
+    <origin xyz="0.0 ${reflect * 0.0288} 0.07565" rpy="1.5708 0 ${reflect * 1.5708}"/>
     </xacro:macro>
 
 </robot>

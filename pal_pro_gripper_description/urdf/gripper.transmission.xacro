@@ -19,11 +19,15 @@ limitations under the License.
 
   <xacro:macro name="pal_pro_gripper_transmission" params="name">
     <transmission name="${name}_trans">
-        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <!-- <plugin>transmission_interface/SimpleTransmission</plugin> -->
+        <plugin>pal_pro_gripper_transmissions/PalGripperTransmission</plugin>
         <actuator name="${name}_actuator" role="actuator1"/>
         <joint name="${name}_joint" role="joint1">
-            <mechanical_reduction>1</mechanical_reduction>          
+            <!-- <mechanical_reduction>1</mechanical_reduction> -->
+            <mechanical_reduction>81</mechanical_reduction>          
         </joint>
+        <!-- Needs to be used in the real robot -->
+        <!-- <param name="func_type">d2l</param>   -->
     </transmission>
   </xacro:macro>
 

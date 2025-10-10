@@ -36,7 +36,6 @@ class LaunchArguments(LaunchArgumentsBase):
     mj_control: DeclareLaunchArgument = CommonArgs.mj_control
     world_name: DeclareLaunchArgument = CommonArgs.world_name
 
-
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
 
     launch_description.add_action(OpaqueFunction(

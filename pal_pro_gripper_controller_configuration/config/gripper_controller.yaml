@@ -3,7 +3,7 @@ ${EE_SIDE_PREFIX}_controller:
     type: joint_trajectory_controller/JointTrajectoryController
     update_rate: 1000
     joints:
-      - ${EE_SIDE_PREFIX}_finger_joint
+      - ${EE_SIDE_PREFIX}_screw_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -14,5 +14,5 @@ ${EE_SIDE_PREFIX}_controller:
     constraints:
       goal_time: 0.6
       stopped_velocity_tolerance: 5.0
-      ${EE_SIDE_PREFIX}_finger_joint:
+      ${EE_SIDE_PREFIX}_screw_joint:
         goal: 0.02
