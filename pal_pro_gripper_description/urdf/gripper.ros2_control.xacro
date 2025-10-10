@@ -27,7 +27,7 @@ limitations under the License.
 
     </xacro:macro>
 
-    <joint name="${name}_finger_joint">
+    <joint name="${name}_screw_joint">
       <command_interface name="position"/>
       <state_interface name="position">
 <<<<<<< HEAD
@@ -59,7 +59,7 @@ limitations under the License.
     joint-->
     <xacro:if value="${sim_type not in ['mujoco', 'mujoco-ros2-control']}">
       <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.transmission.xacro" />
-      <xacro:pal_pro_gripper_transmission name="${name}_finger"/>
+      <xacro:pal_pro_gripper_transmission name="${name}_screw"/>
     </xacro:if>
 
   </xacro:macro>
