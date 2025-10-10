@@ -92,7 +92,7 @@
       <parent link="${name}_base_finger_${side}_link"/>
       <child link="${name}_inner_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${59.548 * deg_to_rad}" upper="${107.619 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <limit lower="0" upper="${53 * deg_to_rad}" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
@@ -122,7 +122,7 @@
       <parent link="${name}_base_link"/>
       <child link="${name}_outer_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${41.999 * deg_to_rad}" upper="${92.838 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <limit lower="0" upper="${53 * deg_to_rad}" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
@@ -152,7 +152,7 @@
       <parent link="${name}_inner_finger_${side}_link"/>
       <child link="${name}_fingertip_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${59.548 * deg_to_rad}" upper="${107.619 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <limit lower="${-53 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="37.281" offset="0.0"/>
     </joint>
 
