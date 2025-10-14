@@ -11,7 +11,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.004"/>
+          <sphere radius="0.002"/>
         </geometry>
         <material name="">
           <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -20,7 +20,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.004"/>
+          <sphere radius="0.002"/>
         </geometry>
       </collision>
     </link>
@@ -47,7 +47,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.005"/>
+          <sphere radius="0.001"/>
         </geometry>
         <material name="">
           <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -56,7 +56,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.005"/>
+          <sphere radius="0.001"/>
         </geometry>
       </collision>
     </link>
@@ -92,7 +92,7 @@
       <parent link="${name}_base_finger_${side}_link"/>
       <child link="${name}_inner_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="0" upper="${53 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <limit lower="${-42.840* deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
@@ -122,7 +122,7 @@
       <parent link="${name}_base_link"/>
       <child link="${name}_outer_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="0" upper="${53 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <limit lower="${-42.840 * deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
@@ -152,7 +152,7 @@
       <parent link="${name}_inner_finger_${side}_link"/>
       <child link="${name}_fingertip_${side}_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${-53 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
+      <limit lower="${-8.001 * deg_to_rad}" upper="${42.840 * deg_to_rad}" velocity="2" effort="0.1"/>
       <mimic joint="${name}_screw_joint" multiplier="37.281" offset="0.0"/>
     </joint>
 
@@ -273,5 +273,15 @@
       <mu1>0.9</mu1>
       <mu2>0.9</mu2>
     </gazebo>
+
+    <gazebo>
+      <plugin name="mimic_joint_plugin_right" filename="libgazebo_ros_mimic_joint.so">
+        <joint>gripper_screw_left_joint</joint>
+        <mimicJoint>gripper_screw_right_joint</mimicJoint>
+        <multiplier>1.0</multiplier>
+        <offset>0.0</offset>
+      </plugin>
+    </gazebo>
+
   </xacro:macro>
 </robot>
