@@ -283,5 +283,16 @@
       </plugin>
     </gazebo>
 
+    <!-- Base finger links -->
+    <gazebo reference="${name}_base_finger_left_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_base_finger_right_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
   </xacro:macro>
 </robot>

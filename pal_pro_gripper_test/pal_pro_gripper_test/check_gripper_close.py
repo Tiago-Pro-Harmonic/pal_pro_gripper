@@ -45,7 +45,11 @@ class CheckGripper(Node):
             return
 
         traj_msg = JointTrajectory()
+<<<<<<< HEAD
         traj_msg.joint_names = ['gripper_left_screw_joint']
+=======
+        traj_msg.joint_names = ['gripper_left_finger_joint']
+>>>>>>> b225891 (fixing rebase)
 
         point = JointTrajectoryPoint()
         point.positions = [self.current_position]
