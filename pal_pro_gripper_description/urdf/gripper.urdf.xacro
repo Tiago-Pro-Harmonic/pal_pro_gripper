@@ -25,10 +25,10 @@
       </collision>
     </link>
 
-    <xacro:property name="screw_joint_name" value="${name + '_screw_joint' if side == 'left' else name + '_screw_' + side + '_joint'}" />
+    <xacro:property name="finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_screw_' + side + '_joint'}" />
 
-    <joint name="${screw_joint_name}" type="prismatic">
-      <xacro:origin_screw_joint reflect="${reflect}"/>
+    <joint name="${finger_joint_name}" type="prismatic">
+      <xacro:origin_finger_joint reflect="${reflect}"/>
       <parent link="${name}_base_finger_${side}_link"/>
       <child link="${name}_screw_${side}_link"/>
       <axis xyz="0 1 0"/>
@@ -37,7 +37,7 @@
         <dynamics damping="0.03"/>
       </xacro:if>
       <xacro:unless value="${side == 'left'}">
-        <mimic joint="${name}_screw_joint" multiplier="1" offset="0" />
+        <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
       </xacro:unless>
     </joint>
 
@@ -93,7 +93,7 @@
       <child link="${name}_inner_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-42.840* deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
-      <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
+      <mimic joint="${name}_finger_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
 
@@ -123,7 +123,7 @@
       <child link="${name}_outer_finger_${side}_link"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-42.840 * deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
-      <mimic joint="${name}_screw_joint" multiplier="-37.281" offset="0.0"/>
+      <mimic joint="${name}_finger_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
 
 
@@ -153,7 +153,7 @@
       <child link="${name}_fingertip_${side}_link"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-8.001 * deg_to_rad}" upper="${42.840 * deg_to_rad}" velocity="2" effort="0.1"/>
-      <mimic joint="${name}_screw_joint" multiplier="37.281" offset="0.0"/>
+      <mimic joint="${name}_finger_joint" multiplier="37.281" offset="0.0"/>
     </joint>
 
   </xacro:macro>
@@ -251,12 +251,12 @@
       <mu2>0.9</mu2>
     </gazebo>
     <!-- Screw links -->
-    <gazebo reference="${name}_screw_joint">
+    <gazebo reference="${name}_finger_joint">
       <material>Gazebo/DarkGrey</material>
       <mu1>0.9</mu1>
       <mu2>0.9</mu2>
     </gazebo>
-    <gazebo reference="${name}_screw_joint">
+    <gazebo reference="${name}_finger_joint">
       <material>Gazebo/DarkGrey</material>
       <mu1>0.9</mu1>
       <mu2>0.9</mu2>
