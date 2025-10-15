@@ -142,6 +142,20 @@
       <axis xyz="0 0 0" />
     </joint>
 
+    <!-- Grasping Frame -->
+    <joint name="${name}_grasping_frame_joint" type="fixed">
+      <parent link="${name}_base_link"/>
+      <child link="${name}_grasping_link"/>
+      <origin xyz="0.0 0 0.157157" rpy="0 -1.57 0" />
+    </joint>
+
+    <link name="${name}_grasping_link">
+      <inertial>
+        <mass value="1e-9" />
+        <inertia ixx="1e-9" ixy="0.0" ixz="0.0" iyy="1e-9" iyz="0.0" izz="1e-9" />
+      </inertial>
+    </link>
+
     <!-- Fingers -->
     <xacro:pro_finger name="${name}" side="left" reflect="-1" finger_offset="${finger_offset}"/>
     <xacro:pro_finger name="${name}" side="right" reflect="1" finger_offset="${finger_offset}"/>
