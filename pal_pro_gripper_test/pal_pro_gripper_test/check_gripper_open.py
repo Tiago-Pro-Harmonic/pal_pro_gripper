@@ -30,10 +30,6 @@ class CheckGripperReverse(Node):
 
         traj_msg = JointTrajectory()
 
-        traj_msg.joint_names = ['gripper_left_screw_joint']
-
-        traj_msg.joint_names = ['gripper_left_finger_joint']
-
         traj_msg.joint_names = ['gripper_left_finger_joint']
 
         point = JointTrajectoryPoint()
