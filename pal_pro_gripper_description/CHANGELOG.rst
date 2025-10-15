@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* adding grasping frame
+* Contributors: Matteo Villani
+
 1.7.2 (2025-10-08)
 ------------------
 
