@@ -25,7 +25,7 @@
       </collision>
     </link>
 
-    <xacro:property name="finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_screw_' + side + '_joint'}" />
+    <xacro:property name="finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_finger_' + side + '_joint'}" />
 
     <joint name="${finger_joint_name}" type="prismatic">
       <xacro:origin_finger_joint reflect="${reflect}"/>
@@ -276,8 +276,8 @@
 
     <gazebo>
       <plugin name="mimic_joint_plugin_right" filename="libgazebo_ros_mimic_joint.so">
-        <joint>gripper_screw_left_joint</joint>
-        <mimicJoint>gripper_screw_right_joint</mimicJoint>
+        <joint>gripper_finger_joint</joint>
+        <mimicJoint>gripper_finger_right_joint</mimicJoint>
         <multiplier>1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
