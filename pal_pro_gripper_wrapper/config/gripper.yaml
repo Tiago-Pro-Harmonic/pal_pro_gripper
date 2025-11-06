@@ -21,6 +21,6 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     closing_time: 1.5
 
     # Open/closed joint value for pal-pro-gripper
-    open_value: [0.0]
-    close_value: [0.8]
+    open_value: [0.8]
+    close_value: [0.0]
 
