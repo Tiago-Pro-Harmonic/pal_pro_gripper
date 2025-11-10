@@ -43,7 +43,7 @@ limitations under the License.
 
     <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-1"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="1}"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="1"/>
 
     <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-1"/>
 

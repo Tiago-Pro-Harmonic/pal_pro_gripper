@@ -23,7 +23,7 @@
 
     <!-- Mujoco properties -->
     <xacro:property name="sim_type" value="$(arg sim_type)" /> 
-    <xacro:property name="mj_control" value="${arg mj_control}"/>
+    <xacro:property name="mj_control" value="$(arg mj_control)"/>
     <xacro:property name="world_name" value="$(arg world_name)"/>
 
     <!-- INCLUDES -->
