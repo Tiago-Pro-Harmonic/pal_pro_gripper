@@ -24,14 +24,14 @@
         </geometry>
       </collision>
     </link>
-
+  
     <joint name="${name}_inner_finger_${side}_joint" type="revolute">
       <xacro:origin_inner_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
       <parent link="${name}_base_link" />
       <child link="${name}_inner_finger_${side}_link" />
-      <axis xyz="0 0 1" />
-      <limit lower="0" upper="${46 * deg_to_rad}" velocity="2" effort="0.1" />
-      <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
+      <axis xyz="0 0 -1" />
+      <limit lower="${-46 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
+      <mimic joint="${name}_finger_joint" multiplier="1" offset="${-46 * deg_to_rad}" />
     </joint>
 
     <!-- Outer finger -->
@@ -56,18 +56,17 @@
 
     <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will mimic this joint-->
     <xacro:property name="outer_finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_outer_finger_' + side + '_joint'}" />
-
     <joint name="${outer_finger_joint_name}" type="revolute">
       <xacro:origin_outer_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
       <parent link="${name}_base_link" />
       <child link="${name}_outer_finger_${side}_link" />
-      <axis xyz="0 0 1" />
-      <limit lower="0" upper="${54.431 * deg_to_rad}" velocity="2" effort="0.1" />
+      <axis xyz="0 0 -1" />
+      <limit lower="0.0" upper="${46 * deg_to_rad}" velocity="2" effort="0.1" />
       <xacro:if value="${side == 'left'}">
         <dynamics damping="0.03"/>
       </xacro:if>
       <xacro:unless value="${side == 'left'}">
-        <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
+        <mimic joint="${name}_finger_joint" multiplier="1" offset="0.0" />
       </xacro:unless>
     </joint>
 
@@ -95,14 +94,15 @@
       <xacro:origin_fingertip_joint reflect="${reflect}" />
       <parent link="${name}_inner_finger_${side}_link" />
       <child link="${name}_fingertip_${side}_link" />
-      <axis xyz="0 0 1" />
-      <limit lower="${-46 * deg_to_rad}" upper="0" velocity="2" effort="0.1" />
+      <axis xyz="0 0 -1" />
+      <limit lower="${-46 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
       <mimic joint="${name}_finger_joint" multiplier="-1" offset="0" />
     </joint>
 
   </xacro:macro>
 
   <!-- GRIPPER DEFINITION -->
+
   <xacro:macro name="pal_pro_gripper" params="tool_changer:=False name parent *origin">
 
     <!-- Vesion name depending if it is a prototype -->
@@ -148,7 +148,6 @@
       <child link="${name}_grasping_link"/>
       <origin xyz="0.0 0 0.157157" rpy="0 -1.57 0" />
     </joint>
-
     <link name="${name}_grasping_link">
       <inertial>
         <mass value="1e-9" />
@@ -204,7 +203,6 @@
       <implicitSpringDamper>1</implicitSpringDamper>
       <provideFeedback>1</provideFeedback>
     </gazebo>
-
   </xacro:macro>
 
 </robot>
