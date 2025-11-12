@@ -2,6 +2,9 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.9.0 (2025-11-05)
 ------------------
 * Merge branch 'tpe/add_open_loop' into 'humble-devel'

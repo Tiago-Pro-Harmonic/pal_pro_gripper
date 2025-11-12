@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* reverse gripper state
+* Contributors: Matteo Villani
+
 1.9.0 (2025-11-05)
 ------------------
 
