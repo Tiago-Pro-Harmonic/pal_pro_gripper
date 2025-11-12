@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.0 (2025-11-12)
+-------------------
 * fixing sim_type
 * fix range gripper urdf
 * Contributors: susannamastromauro
