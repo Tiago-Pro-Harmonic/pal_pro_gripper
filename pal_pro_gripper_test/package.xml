@@ -3,6 +3,7 @@
   <name>pal_pro_gripper_test</name>
   <version>2.4.0</version>
   <description>Tests for the PAL Pro Gripper</description>
+  <maintainer email="susanna.mastromauro@pal-robotics.com">user</maintainer>
   <license>PAL Robotics S.L.</license>
 
   <test_depend>ament_copyright</test_depend>
