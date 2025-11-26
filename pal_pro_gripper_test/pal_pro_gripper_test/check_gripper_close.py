@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import rclpy
 from rclpy.node import Node
 import numpy as np
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
+
 
 class CheckGripper(Node):
     def __init__(self):
@@ -29,19 +31,19 @@ class CheckGripper(Node):
             10)
 
         self.current_position = 0.0
-        self.step = 0.05
-        self.max_position = 0.95
+        self.step = 0.01
+        self.max_position = 0.07938
 
-        timer_period = 5.0  # secondi
+        timer_period = 5.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.get_logger().info('Nodo avviato. Pubblico una nuova posizione del gripper ogni 5 secondi.')
+        self.get_logger().info('Node started. Publishing a new gripper position every 5 seconds.')
 
     def timer_callback(self):
-        # Controlla se abbiamo superato la posizione massima
-        # Usiamo una piccola tolleranza (1e-6) per confronti sicuri con i float
+        # Check whether the maximum position has been exceeded
+        # Use a small tolerance (1e-6) for safe floating-point comparisons
         if self.current_position > self.max_position + 1e-6:
-            self.get_logger().info('Posizione massima raggiunta. Interruzione della pubblicazione.')
-            self.timer.cancel()  # Ferma il timer
+            self.get_logger().info('Maximum position reached. Stopping publishing.')
+            self.timer.cancel()  # Stop the timer
             return
 
         traj_msg = JointTrajectory()
@@ -54,9 +56,10 @@ class CheckGripper(Node):
         traj_msg.points.append(point)
 
         self.pal_gripper_pub.publish(traj_msg)
-        self.get_logger().info(f'Pubblicata posizione gripper: {self.current_position:.2f}')
+        self.get_logger().info(f'Published gripper position: {self.current_position:.2f}')
 
         self.current_position += self.step
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -70,6 +73,7 @@ def main(args=None):
     finally:
         gripper_commander_node.destroy_node()
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
