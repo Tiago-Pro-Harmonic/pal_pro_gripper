@@ -16,7 +16,6 @@
 
 import rclpy
 from rclpy.node import Node
-import numpy as np
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
