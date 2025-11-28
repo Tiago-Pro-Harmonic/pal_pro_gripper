@@ -2,6 +2,14 @@
 Changelog for package pal_pro_gripper_controller_configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix xacro
+* Fixing urdf and ros2control
+* changing limits joints
+* Fixing urdf and ros2control
+* Contributors: susannamastromauro
+
 1.10.0 (2025-11-12)
 -------------------
 

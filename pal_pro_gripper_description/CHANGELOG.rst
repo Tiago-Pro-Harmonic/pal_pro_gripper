@@ -2,6 +2,25 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* changing mechanical reduction
+* fix ros2control
+* fixing values gripper
+* changes ros2control
+* fix xacro
+* fixing gripper.transmission
+* fixing pipeline
+* Fixing urdf and ros2control
+* adding changing
+* changing limits joints
+* fix
+* Fixing limits joint
+* Fixing pipeline
+* Changing revolute joint limits
+* Fixing urdf and ros2control
+* Contributors: susannamastromauro
+
 1.10.0 (2025-11-12)
 -------------------
 * fixing sim_type

@@ -2,6 +2,13 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* changing mechanical reduction
+* delate colcon_ignore
+* Fixing urdf and ros2control
+* Contributors: susannamastromauro
+
 1.10.0 (2025-11-12)
 -------------------
 * reverse gripper state
