@@ -19,10 +19,10 @@ limitations under the License.
 
   <xacro:macro name="pal_pro_gripper_transmission" params="name">
     <transmission name="${name}_trans">
-        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <plugin>pal_pro_gripper_transmissions/PalGripperTransmission</plugin>
         <actuator name="${name}_actuator" role="actuator1"/>
         <joint name="${name}_joint" role="joint1">
-            <mechanical_reduction>1</mechanical_reduction>          
+            <mechanical_reduction>0.001343799</mechanical_reduction>          
         </joint>
     </transmission>
   </xacro:macro>

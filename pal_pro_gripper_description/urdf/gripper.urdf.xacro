@@ -5,98 +5,159 @@
   <!-- A finger of the pal_pro_gripper -->
   <xacro:macro name="pro_finger" params="name side reflect finger_offset:=0">
 
-    <!-- Inner finger -->
-    <link name="${name}_inner_finger_${side}_link">
-      <xacro:inertial_inner_finger_link />
+    <!-- Screw link -->
+    <link name="${name}_screw_${side}_link">
+      <xacro:inertial_screw_link />
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl" />
+          <sphere radius="0.002"/>
         </geometry>
         <material name="">
           <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl" />
+          <sphere radius="0.002"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <xacro:property name="finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_finger_' + side + '_joint'}" />
+
+    <joint name="${finger_joint_name}" type="prismatic">
+      <xacro:origin_finger_joint reflect="${reflect}"/>
+      <parent link="${name}_base_finger_${side}_link"/>
+      <child link="${name}_screw_${side}_link"/>
+      <axis xyz="0 1 0"/>
+      <!-- Use this limits for simulation-->
+      <!-- <limit lower="0.001327" upper="0.017638" velocity="2" effort="0.1"/> -->
+
+      <!-- Use this limits for real robot-->
+      <limit lower="0.0" upper="0.07938" velocity="2" effort="0.1"/>
+       <xacro:if value="${side == 'left'}">
+        <dynamics damping="0.03"/>
+      </xacro:if>
+      <xacro:unless value="${side == 'left'}">
+        <mimic joint="${name}_finger_joint" multiplier="1" offset="0" />
+      </xacro:unless>
+    </joint>
+
+    <!-- Gripper base finger link-->
+    <link name='${name}_base_finger_${side}_link'>
+      <xacro:inertial_base_finger_link/>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.001"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_base_finger_${side}_joint" type="fixed">
+      <xacro:origin_base_finger_joint reflect="${reflect}"/>
+      <parent link="${name}_base_link"/>
+      <child link="${name}_base_finger_${side}_link"/>
+    </joint>
+
+    <!-- Inner finger -->
+    <link name="${name}_inner_finger_${side}_link">
+      <xacro:inertial_inner_finger_link />
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pal_pro_gripper_description/meshes/inner_finger.stl"/>
         </geometry>
       </collision>
     </link>
   
     <joint name="${name}_inner_finger_${side}_joint" type="revolute">
       <xacro:origin_inner_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
-      <parent link="${name}_base_link" />
-      <child link="${name}_inner_finger_${side}_link" />
-      <axis xyz="0 0 -1" />
-      <limit lower="${-46 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
-      <mimic joint="${name}_finger_joint" multiplier="1" offset="${-46 * deg_to_rad}" />
+      <parent link="${name}_base_finger_${side}_link"/>
+      <child link="${name}_inner_finger_${side}_link"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${-42.840* deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <mimic joint="${name}_finger_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
+
 
     <!-- Outer finger -->
     <link name="${name}_outer_finger_${side}_link">
       <xacro:inertial_outer_finger_link />
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl"/>
         </geometry>
         <material name="">
           <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/outer_finger.stl"/>
         </geometry>
       </collision>
     </link>
 
-    <!--  The left outer joint is set as gripper_finger_joint. All other joints are passive and will mimic this joint-->
-    <xacro:property name="outer_finger_joint_name" value="${name + '_finger_joint' if side == 'left' else name + '_outer_finger_' + side + '_joint'}" />
-    <joint name="${outer_finger_joint_name}" type="revolute">
+    <joint name="${name}_outer_finger_${side}_joint" type="revolute">
       <xacro:origin_outer_finger_joint reflect="${reflect}" offset="${finger_offset}"/>
-      <parent link="${name}_base_link" />
-      <child link="${name}_outer_finger_${side}_link" />
-      <axis xyz="0 0 -1" />
-      <limit lower="0.0" upper="${46 * deg_to_rad}" velocity="2" effort="0.1" />
-      <xacro:if value="${side == 'left'}">
-        <dynamics damping="0.03"/>
-      </xacro:if>
-      <xacro:unless value="${side == 'left'}">
-        <mimic joint="${name}_finger_joint" multiplier="1" offset="0.0" />
-      </xacro:unless>
+      <parent link="${name}_base_link"/>
+      <child link="${name}_outer_finger_${side}_link"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${-42.840 * deg_to_rad}" upper="${8.001 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <mimic joint="${name}_finger_joint" multiplier="-37.281" offset="0.0"/>
     </joint>
+
 
     <!-- Fingertip -->
     <link name="${name}_fingertip_${side}_link">
       <xacro:inertial_fingertip_link />
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl"/>
         </geometry>
         <material name="">
           <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl" />
+          <mesh filename="package://pal_pro_gripper_description/meshes/fingertip.stl"/>
         </geometry>
       </collision>
     </link>
 
     <joint name="${name}_fingertip_${side}_joint" type="revolute">
-      <xacro:origin_fingertip_joint reflect="${reflect}" />
-      <parent link="${name}_inner_finger_${side}_link" />
-      <child link="${name}_fingertip_${side}_link" />
-      <axis xyz="0 0 -1" />
-      <limit lower="${-46 * deg_to_rad}" upper="0" velocity="2" effort="0.1"/>
-      <mimic joint="${name}_finger_joint" multiplier="-1" offset="0" />
+      <xacro:origin_fingertip_joint reflect="${reflect}"/>
+      <parent link="${name}_inner_finger_${side}_link"/>
+      <child link="${name}_fingertip_${side}_link"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${-8.001 * deg_to_rad}" upper="${42.840 * deg_to_rad}" velocity="2" effort="0.1"/>
+      <mimic joint="${name}_finger_joint" multiplier="37.281" offset="0.0"/>
     </joint>
 
   </xacro:macro>
@@ -134,7 +195,6 @@
         </geometry>
       </collision>
     </link>
-
     <joint name="${name}_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent}" />
@@ -158,7 +218,6 @@
     <!-- Fingers -->
     <xacro:pro_finger name="${name}" side="left" reflect="-1" finger_offset="${finger_offset}"/>
     <xacro:pro_finger name="${name}" side="right" reflect="1" finger_offset="${finger_offset}"/>
-
     <!-- Gazebo config -->
     <gazebo reference="${name}_inner_finger_left_link">
       <material>Gazebo/White</material>
@@ -195,14 +254,49 @@
       <mu1>0.9</mu1>
       <mu2>0.9</mu2>
     </gazebo>
+    <!-- Screw links -->
     <gazebo reference="${name}_finger_joint">
-      <implicitSpringDamper>1</implicitSpringDamper>
-      <provideFeedback>1</provideFeedback>
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
     </gazebo>
     <gazebo reference="${name}_finger_joint">
-      <implicitSpringDamper>1</implicitSpringDamper>
-      <provideFeedback>1</provideFeedback>
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <!-- Base finger links -->
+    <gazebo reference="${name}_base_finger_left_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_base_finger_right_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <gazebo>
+      <plugin name="mimic_joint_plugin_right" filename="libgazebo_ros_mimic_joint.so">
+        <joint>gripper_finger_joint</joint>
+        <mimicJoint>gripper_finger_right_joint</mimicJoint>
+        <multiplier>1.0</multiplier>
+        <offset>0.0</offset>
+      </plugin>
+    </gazebo>
+
+    <!-- Base finger links -->
+    <gazebo reference="${name}_base_finger_left_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+    <gazebo reference="${name}_base_finger_right_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
     </gazebo>
   </xacro:macro>
-
 </robot>
