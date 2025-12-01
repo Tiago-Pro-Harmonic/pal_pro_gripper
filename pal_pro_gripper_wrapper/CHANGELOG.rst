@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update
+* Contributors: Matteo Villani
+
 1.11.0 (2025-11-28)
 -------------------
 * changing mechanical reduction

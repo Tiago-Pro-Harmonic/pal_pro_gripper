@@ -2,6 +2,13 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add build_depend condition for pal_pro_gripper_transmissions
+* fixing depend
+* adding dependence transmission
+* Contributors: ileniaperrella, susannamastromauro
+
 1.11.0 (2025-11-28)
 -------------------
 * changing mechanical reduction
