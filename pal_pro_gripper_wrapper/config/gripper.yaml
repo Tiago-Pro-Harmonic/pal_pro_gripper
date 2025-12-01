@@ -8,7 +8,8 @@ ${EE_SIDE_PREFIX}_grasper_srv:
 
     # if the desired position differs by the actual position by
     # being > than 'max_position_error', the robot is grasping
-    max_position_error: 0.15
+    # 0.003 in order to say "grasped" for a objcet with width ~<1cm
+    max_position_error: 0.003
 
     # Time for which the GripperGrasper analyzes the error (in s)
     timeout: 4.0
@@ -21,6 +22,6 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     closing_time: 1.5
 
     # Open/closed joint value for pal-pro-gripper
-    open_value: [0.8]
+    open_value: [0.07938]
     close_value: [0.0]
 
