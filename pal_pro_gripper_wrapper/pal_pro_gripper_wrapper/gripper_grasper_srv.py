@@ -162,8 +162,8 @@ class GripperGrasper(Node):
     # Get optimal value to close the gripper to not let the joint stress in case of grasp
     def get_optimal_close(self) -> list[float]:
         optimal_close = self.last_state
-        # range: [open_value, close_value]
-        optimal_close = min(max(self.open_value[0], optimal_close), self.close_value[0])
+        # range: [close_value, open_value]
+        optimal_close = max(min(self.open_value[0], optimal_close), self.close_value[0])
         self.get_logger().info(f"Optimal close: {optimal_close}")
         return [optimal_close]
 
@@ -175,7 +175,7 @@ class GripperGrasper(Node):
         p.time_from_start = Duration(seconds=exec_time).to_msg()
         jt.points.append(p)
 
-        self.get_logger().info("Closing: " + str(j_positions[0]))
+        self.get_logger().info("Sending: " + str(j_positions[0]))
         self.cmd_pub.publish(jt)
         return
 
