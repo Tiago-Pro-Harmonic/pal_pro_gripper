@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_wrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.11.1 (2025-12-01)
+-------------------
 * update
 * Contributors: Matteo Villani
 

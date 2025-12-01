@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.11.1 (2025-12-01)
+-------------------
 * add build_depend condition for pal_pro_gripper_transmissions
 * fixing depend
 * adding dependence transmission
