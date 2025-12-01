@@ -16,7 +16,7 @@
 
   <exec_depend>xacro</exec_depend>
   <exec_depend>pal_urdf_utils</exec_depend>
-  <exec_depend>pal_pro_gripper_transmissions</exec_depend>
+  <depend>pal_pro_gripper_transmissions</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
