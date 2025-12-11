@@ -18,7 +18,7 @@
 
     <!-- PROPERTIES -->
     <xacro:property name="tool_changer" value="$(arg tool_changer)" />
-    <xacro:property name="calibration_tool" value="z$(arg calibration_tool)" />
+    <xacro:property name="calibration_tool" value="$(arg calibration_tool)" />
     <xacro:property name="use_sim_time" value="$(arg use_sim_time)" />
     <xacro:property name="name" value="gripper"/>
 
