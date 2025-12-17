@@ -2,6 +2,12 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fixing urdf gripper
+* adding use_sim_time
+* Contributors: susannamastromauro
+
 1.11.1 (2025-12-01)
 -------------------
 * add build_depend condition for pal_pro_gripper_transmissions
