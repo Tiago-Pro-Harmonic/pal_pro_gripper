@@ -2,8 +2,8 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.11.2 (2025-12-17)
+-------------------
 * fixing urdf gripper
 * adding use_sim_time
 * Contributors: susannamastromauro
