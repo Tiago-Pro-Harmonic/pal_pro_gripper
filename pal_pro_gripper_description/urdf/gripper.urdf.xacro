@@ -186,6 +186,7 @@
     </joint>
 
     <!-- Grasping Frame -->
+    <!-- If calibration tool is used, add the visible tool to end effector to avoid collisions -->
     <xacro:if value="${calibration_tool}">
       <joint name="${name}_grasping_frame_joint" type="fixed">
         <parent link="${name}_base_link"/>
@@ -220,13 +221,13 @@
 
       </link>
 
-      <gazebo reference="${name}_grasping_link">
+    </xacro:if>
+
+    <gazebo reference="${name}_grasping_link">
         <material>Gazebo/Blue</material>
         <turnGravityOff>true</turnGravityOff>
       </gazebo>
-      
-    </xacro:if>
-    
+
     <xacro:unless value="${calibration_tool}">
       <joint name="${name}_grasping_frame_joint" type="fixed">
         <parent link="${name}_base_link"/>
