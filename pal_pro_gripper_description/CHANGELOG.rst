@@ -2,6 +2,13 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* adding description
+* Fix a typo
+* adding calibration_tool
+* Contributors: silviamasiello
+
 1.11.2 (2025-12-17)
 -------------------
 * fixing urdf gripper
