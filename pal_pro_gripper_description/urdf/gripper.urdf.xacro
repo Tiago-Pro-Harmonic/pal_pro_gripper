@@ -147,7 +147,7 @@
 
   <!-- GRIPPER DEFINITION -->
 
-  <xacro:macro name="pal_pro_gripper" params="tool_changer:=False name parent *origin">
+  <xacro:macro name="pal_pro_gripper" params="tool_changer:=False name parent *origin calibration_tool:=False">
 
     <!-- Vesion name depending if it is a prototype -->
     <xacro:property name="gripper_base_type" value="${'base_link_tc' if tool_changer else 'base_link_ntc'}" />
@@ -186,17 +186,63 @@
     </joint>
 
     <!-- Grasping Frame -->
-    <joint name="${name}_grasping_frame_joint" type="fixed">
-      <parent link="${name}_base_link"/>
-      <child link="${name}_grasping_link"/>
-      <origin xyz="0.0 0 0.157157" rpy="0 -1.57 0" />
-    </joint>
-    <link name="${name}_grasping_link">
-      <inertial>
-        <mass value="1e-9" />
-        <inertia ixx="1e-9" ixy="0.0" ixz="0.0" iyy="1e-9" iyz="0.0" izz="1e-9" />
-      </inertial>
-    </link>
+    <!-- If calibration tool is used, add the visible tool to end effector to avoid collisions -->
+    <xacro:if value="${calibration_tool}">
+      <joint name="${name}_grasping_frame_joint" type="fixed">
+        <parent link="${name}_base_link"/>
+        <child link="${name}_grasping_link"/>
+        <origin xyz="0.0 0.0 0.13" rpy="0 0 0" />
+      </joint>
+      
+      <link name="${name}_grasping_link">
+        
+        <inertial>
+          <mass value="0.1" />
+          <origin xyz="0 0 0.1" rpy="0 0 0" /> 
+          <inertia ixx="0.000341" ixy="0" ixz="0" iyy="0.000241" iyz="0" izz="0.000101" />
+        </inertial>
+
+        <visual>
+          <origin xyz="0 0 0.1" rpy="0 0 0" /> 
+          <geometry>
+            <box size="0.01 0.12 0.09" />
+          </geometry>
+          <material name="grasp_box_color">
+            <color rgba="0 0 1 1" /> 
+          </material>
+        </visual>
+
+        <collision>
+          <origin xyz="0 0 0.1" rpy="0 0 0" /> 
+          <geometry>
+            <box size="0.01 0.12 0.09" />
+          </geometry>
+        </collision>
+
+      </link>
+
+    </xacro:if>
+
+    <gazebo reference="${name}_grasping_link">
+        <material>Gazebo/Blue</material>
+        <turnGravityOff>true</turnGravityOff>
+      </gazebo>
+
+    <xacro:unless value="${calibration_tool}">
+      <joint name="${name}_grasping_frame_joint" type="fixed">
+        <parent link="${name}_base_link"/>
+        <child link="${name}_grasping_link"/>
+        <origin xyz="0.0 0.0 0.157157" rpy="0 -1.57 0" />
+      </joint>
+      
+      <link name="${name}_grasping_link">
+        <inertial>
+          <mass value="1e-9" />
+          <inertia ixx="1e-9" ixy="0.0" ixz="0.0" iyy="1e-9" iyz="0.0" izz="1e-9" />
+        </inertial>
+      </link>
+      
+    </xacro:unless>
 
     <!-- Fingers -->
     <xacro:pro_finger name="${name}" side="left" reflect="-1" finger_offset="${finger_offset}"/>
