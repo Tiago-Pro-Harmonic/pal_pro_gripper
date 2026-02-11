@@ -2,6 +2,11 @@
 Changelog for package pal_pro_gripper_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix transmissions dependencies
+* Contributors: Aina
+
 1.11.3 (2026-02-09)
 -------------------
 * adding description
