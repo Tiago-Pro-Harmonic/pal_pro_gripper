@@ -18,7 +18,7 @@
 <robot name="pal_pro_gripper" xmlns:xacro="http://ros.org/wiki/xacro">
  
     <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
         <parameters>$(find pal_pro_gripper_controller_configuration)/config/gazebo_controller_manager_cfg.yaml</parameters>
       </plugin>
     </gazebo>
