@@ -307,14 +307,14 @@
       <mu2>0.9</mu2>
     </gazebo>
 
-    <gazebo>
+    <!-- <gazebo>
       <plugin name="mimic_joint_plugin_right" filename="libgazebo_ros_mimic_joint.so">
         <joint>gripper_finger_joint</joint>
         <mimicJoint>gripper_finger_right_joint</mimicJoint>
         <multiplier>1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
-    </gazebo>
+    </gazebo> -->
 
     <!-- Base finger links -->
     <gazebo reference="${name}_base_finger_left_link">
