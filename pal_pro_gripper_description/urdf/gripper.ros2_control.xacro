@@ -23,6 +23,13 @@ limitations under the License.
       <joint name="${mimic_joint_name}">
         <param name="mimic">${actuated_joint_name}</param>
         <param name="multiplier">${multiplier}</param>
+        <!-- state_interface lets GazeboSimSystem track the physical joint position.
+             hardware_interface propagates the mimic state automatically from the
+             URDF <mimic> tag. Command is enforced in Gazebo via
+             JointPositionController plugin + gripper_mimic_relay node. -->
+        <xacro:if value="${sim_type == 'gazebo'}">
+          <state_interface name="position"/>
+        </xacro:if>
       </joint>
 
     </xacro:macro>
@@ -37,23 +44,23 @@ limitations under the License.
     </joint>
 
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="0.22"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="0.22" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28" sim_type="${sim_type}"/>
 
     <!-- Transmission only set to left finger joint, other joints are passive and mimic this
     joint-->
-    <xacro:if value="${sim_type not in ['mujoco', 'mujoco-ros2-control']}">
+    <xacro:if value="${sim_type == 'no-simulation'}">
       <xacro:include filename="$(find pal_pro_gripper_description)/urdf/gripper.transmission.xacro" />
       <xacro:pal_pro_gripper_transmission name="${name}_finger"/>
     </xacro:if>

@@ -247,6 +247,34 @@
     <!-- Fingers -->
     <xacro:pro_finger name="${name}" side="left" reflect="-1" finger_offset="${finger_offset}"/>
     <xacro:pro_finger name="${name}" side="right" reflect="1" finger_offset="${finger_offset}"/>
+
+    <!-- Gazebo mimic joint enforcement via JointPositionController.
+         sdformat_urdf drops URDF <mimic> tags so Gazebo physics does not enforce
+         the mechanical coupling. Each mimic joint gets a Gazebo PID controller
+         driven by the gripper_mimic_relay ROS2 node via ros_gz_bridge.
+         Topic convention: /gz_gripper_mimic/{joint_full_name} -->
+    <xacro:macro name="gz_mimic_joint_controller" params="joint_name">
+      <gazebo>
+        <plugin filename="gz-sim-joint-position-controller-system"
+                name="gz::sim::systems::JointPositionController">
+          <joint_name>${joint_name}</joint_name>
+          <topic>/gz_gripper_mimic/${joint_name}</topic>
+          <p_gain>3.0</p_gain>
+          <d_gain>0.2</d_gain>
+          <i_gain>0.0</i_gain>
+          <cmd_max>50.0</cmd_max>
+          <cmd_min>-50.0</cmd_min>
+        </plugin>
+      </gazebo>
+    </xacro:macro>
+
+    <xacro:gz_mimic_joint_controller joint_name="${name}_outer_finger_right_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_inner_finger_right_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_fingertip_right_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_finger_right_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_outer_finger_left_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_inner_finger_left_joint"/>
+    <xacro:gz_mimic_joint_controller joint_name="${name}_fingertip_left_joint"/>
     <!-- Gazebo config -->
     <gazebo reference="${name}_inner_finger_left_link">
       <material>Gazebo/White</material>

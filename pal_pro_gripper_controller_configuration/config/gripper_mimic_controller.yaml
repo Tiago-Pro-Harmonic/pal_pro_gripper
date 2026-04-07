@@ -1,0 +1,15 @@
+${EE_SIDE_PREFIX}_mimic_controller:
+  ros__parameters:
+    type: forward_command_controller/ForwardCommandController
+    # Joints must be listed in the same order the relay node publishes them:
+    # outer_right, inner_right, fingertip_right, finger_right,
+    # outer_left,  inner_left,  fingertip_left
+    joints:
+      - ${EE_SIDE_PREFIX}_outer_finger_right_joint
+      - ${EE_SIDE_PREFIX}_inner_finger_right_joint
+      - ${EE_SIDE_PREFIX}_fingertip_right_joint
+      - ${EE_SIDE_PREFIX}_finger_right_joint
+      - ${EE_SIDE_PREFIX}_outer_finger_left_joint
+      - ${EE_SIDE_PREFIX}_inner_finger_left_joint
+      - ${EE_SIDE_PREFIX}_fingertip_left_joint
+    interface_name: position
