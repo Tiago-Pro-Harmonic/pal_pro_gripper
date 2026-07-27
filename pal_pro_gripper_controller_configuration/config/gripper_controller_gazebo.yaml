@@ -1,0 +1,41 @@
+${EE_SIDE_PREFIX}_controller:
+  ros__parameters:
+    type: joint_trajectory_controller/JointTrajectoryController
+    update_rate: 1000
+    # In Gazebo the mimic joints are independently actuated instead of relying
+    # on gz_ros2_control's mimic controller (unfixed DART bug on Harmonic's
+    # dartsim version, see
+    # https://github.com/ros-controls/gz_ros2_control/issues/165 - see
+    # gripper.ros2_control.xacro). gripper_grasper_srv computes and sends
+    # their target position alongside the leader's. On the real robot only
+    # the leader is listed here (gripper_controller.yaml), since the
+    # followers stay true ros2_control mimic joints without a command
+    # interface.
+    joints:
+      - ${EE_SIDE_PREFIX}_finger_joint
+      - ${EE_SIDE_PREFIX}_finger_right_joint
+      - ${EE_SIDE_PREFIX}_inner_finger_left_joint
+      - ${EE_SIDE_PREFIX}_inner_finger_right_joint
+      - ${EE_SIDE_PREFIX}_outer_finger_left_joint
+      - ${EE_SIDE_PREFIX}_outer_finger_right_joint
+      - ${EE_SIDE_PREFIX}_fingertip_left_joint
+      - ${EE_SIDE_PREFIX}_fingertip_right_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+
+    # Lets a trajectory command a subset of the 8 joints above (e.g. just the
+    # leader, for manual testing); joints left out simply hold their last
+    # commanded value instead of the goal being rejected. gripper_grasper_srv
+    # always sends all 8 with the correct mimic-derived positions, so this
+    # only matters for ad-hoc testing.
+    allow_partial_joints_goal: true
+
+    open_loop_control: true
+
+    constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 5.0
+      ${EE_SIDE_PREFIX}_finger_joint:
+        goal: 0.02

@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import xml.etree.ElementTree as ET
+
 import rclpy
 from rclpy.duration import Duration
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
+from rclpy.qos import QoSProfile, DurabilityPolicy
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
 from std_srvs.srv import Empty
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, String
 from rclpy.callback_groups import ReentrantCallbackGroup
 
 
@@ -55,6 +58,21 @@ class GripperGrasper(Node):
         self.is_grasped = Bool()
         self.is_grasped.data = False
 
+        # In Gazebo, gz_ros2_control's mimic controller can drive a mimic joint
+        # into its own position limit and never recover (unfixed DART bug on
+        # Harmonic's dartsim version, see
+        # https://github.com/ros-controls/gz_ros2_control/issues/165). The
+        # follower joints are independently actuated in sim instead (see
+        # gripper.ros2_control.xacro), so we compute and send their target
+        # position ourselves from the URDF's <mimic> tags. On the real robot
+        # the followers stay true ros2_control mimic joints and this is unused.
+        if not self.has_parameter('use_sim_time'):
+            self.declare_parameter('use_sim_time', False)
+        self.use_sim_time = self.get_parameter(
+            'use_sim_time').get_parameter_value().bool_value
+        # list of (follower_joint_name, leader_joint_name, multiplier, offset)
+        self.follower_joints: list[tuple[str, str, float, float]] = []
+
         # Define if the gripper grasping without stressing the joint
         # applying the 'optimal_close' joint value
         self.has_grasped_object = False
@@ -75,6 +93,15 @@ class GripperGrasper(Node):
             JointTrajectory, f'/{self.controller_name}/joint_trajectory', 10)
         self.get_logger().info(f"Publishing on topic: {self.cmd_pub.topic_name}")
 
+        if self.use_sim_time:
+            # robot_state_publisher publishes robot_description as transient
+            # local, so a late subscriber still gets the last (only) message.
+            rd_qos = QoSProfile(depth=1)
+            rd_qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
+            self.robot_description_sub = self.create_subscription(
+                String, '/robot_description', self.robot_description_cb,
+                qos_profile=rd_qos, callback_group=self.cb_group)
+
         # Graspng srv to offer
         self.grasp_srv = self.create_service(
             Empty, f'/{self.get_name()}/grasp', self.grasp_cb, callback_group=self.cb_group)
@@ -82,7 +109,7 @@ class GripperGrasper(Node):
 
         # Releasing srv to offer
         self.release_srv = self.create_service(
-            Empty, f'/{self.get_name()}/release', self.open_cb)
+            Empty, f'/{self.get_name()}/release', self.open_cb, callback_group=self.cb_group)
         self.get_logger().info(f"Offering release srv on: {self.release_srv.srv_name}")
 
         # Publish the grasp state each 'rate' secons to know if an object is grasped or not
@@ -104,6 +131,29 @@ class GripperGrasper(Node):
             rclpy.shutdown()
 
         self.last_state = msg.position[idx]
+
+    def robot_description_cb(self, msg: String) -> None:
+        root = ET.fromstring(msg.data)
+        followers = []
+        for joint in root.findall('joint'):
+            mimic = joint.find('mimic')
+            if mimic is None:
+                continue
+            leader_name = mimic.get('joint')
+            if leader_name in self.joint_names:
+                followers.append((
+                    joint.get('name'),
+                    leader_name,
+                    float(mimic.get('multiplier', '1.0')),
+                    float(mimic.get('offset', '0.0')),
+                ))
+        self.follower_joints = followers
+        self.get_logger().info(
+            f"Discovered {len(followers)} mimic joint(s) following {self.joint_names}: "
+            f"{[f[0] for f in followers]}")
+        # robot_description is only published once (transient local): no need
+        # to keep listening.
+        self.destroy_subscription(self.robot_description_sub)
 
     def publish_grasping_state(self) -> None:
         self.is_grasped.data = self.has_grasped_object
@@ -169,13 +219,20 @@ class GripperGrasper(Node):
 
     def send_joint_traj(self, j_positions: list[float], exec_time: float) -> None:
         jt = JointTrajectory()
-        jt.joint_names = self.joint_names
+        jt.joint_names = list(self.joint_names)
+        positions = list(j_positions)
+
+        for follower_name, leader_name, multiplier, offset in self.follower_joints:
+            leader_position = j_positions[self.joint_names.index(leader_name)]
+            jt.joint_names.append(follower_name)
+            positions.append(multiplier * leader_position + offset)
+
         p = JointTrajectoryPoint()
-        p.positions = j_positions
+        p.positions = positions
         p.time_from_start = Duration(seconds=exec_time).to_msg()
         jt.points.append(p)
 
-        self.get_logger().info("Sending: " + str(j_positions[0]))
+        self.get_logger().info("Sending: " + str(dict(zip(jt.joint_names, positions))))
         self.cmd_pub.publish(jt)
         return
 

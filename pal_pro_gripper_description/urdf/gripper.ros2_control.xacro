@@ -20,10 +20,26 @@ limitations under the License.
 
     <xacro:macro name="ros2_control_pal_pro_gripper_mimic_joint" params="mimic_joint_name actuated_joint_name multiplier sim_type:=no-simulation">
 
-      <joint name="${mimic_joint_name}">
-        <param name="mimic">${actuated_joint_name}</param>
-        <param name="multiplier">${multiplier}</param>
-      </joint>
+      <xacro:if value="${sim_type == 'gazebo'}">
+        <!-- gz_ros2_control's software mimic controller can drive the joint
+        into its own limit and never recover (unfixed DART bug on Harmonic's
+        dartsim version, see
+        https://github.com/ros-controls/gz_ros2_control/issues/165). Make the
+        joint independently actuated in simulation instead of relying on the
+        URDF mimic tag; the caller is responsible for computing and sending
+        this joint's target position alongside the leader's. -->
+        <joint name="${mimic_joint_name}" mimic="false">
+          <command_interface name="position"/>
+          <state_interface name="position"/>
+        </joint>
+      </xacro:if>
+      <xacro:unless value="${sim_type == 'gazebo'}">
+        <joint name="${mimic_joint_name}">
+          <param name="mimic">${actuated_joint_name}</param>
+          <param name="multiplier">${multiplier}</param>
+          <state_interface name="position"/>
+        </joint>
+      </xacro:unless>
 
     </xacro:macro>
 
@@ -37,19 +53,19 @@ limitations under the License.
     </joint>
 
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="0.22"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_finger_right_joint" actuated_joint_name="${name}_finger_joint" multiplier="0.22" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_outer_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_inner_finger_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="-8.28" sim_type="${sim_type}"/>
 
-    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28"/>
+    <xacro:ros2_control_pal_pro_gripper_mimic_joint mimic_joint_name="${name}_fingertip_left_joint" actuated_joint_name="${name}_finger_joint" multiplier="8.28" sim_type="${sim_type}"/>
 
     <!-- Transmission only set to left finger joint, other joints are passive and mimic this
     joint-->

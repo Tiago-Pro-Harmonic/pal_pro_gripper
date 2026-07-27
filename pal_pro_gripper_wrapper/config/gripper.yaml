@@ -12,14 +12,22 @@ ${EE_SIDE_PREFIX}_grasper_srv:
     max_position_error: 0.003
 
     # Time for which the GripperGrasper analyzes the error (in s)
-    timeout: 4.0
+    timeout: 6.0
 
     # Publishing rate (of grasp state) - (in hz)
     rate: 1.0
 
     # Time for which to open/close the gripper
-    opening_time: 0.5
-    closing_time: 1.5
+    # Raised from 0.5/1.5s: position_proportional_gain was lowered to 0.02
+    # (see gazebo_controller_manager_cfg.yaml) to avoid overshooting joint
+    # limits into the unfixed DART bug
+    # (https://github.com/ros-controls/gz_ros2_control/issues/165), which
+    # makes the gripper close more slowly. The old times were too short for
+    # the trajectory to actually converge, so the object-detection check
+    # below (comparing to max_position_error right after closing_time) was
+    # firing on an still-in-motion gripper instead of a real obstruction.
+    opening_time: 1.5
+    closing_time: 3.5
 
     # Open/closed joint value for pal-pro-gripper
     open_value: [0.07938]

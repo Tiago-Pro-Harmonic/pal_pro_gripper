@@ -20,6 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 from controller_manager.launch_utils import generate_load_controller_launch_description
 from launch_pal.param_utils import parse_parametric_yaml
 from launch_pal.arg_utils import LaunchArgumentsBase, read_launch_argument
+from launch_pal.robot_arguments import CommonArgs
 from launch.actions import DeclareLaunchArgument, SetLaunchConfiguration, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch import LaunchDescription, LaunchContext
@@ -31,6 +32,7 @@ class LaunchArguments(LaunchArgumentsBase):
         name='side',
         default_value='',
         description='side of the end effector, can be left empty')
+    use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
 
 
 def declare_actions(launch_description: LaunchDescription, launch_args: LaunchArguments):
@@ -54,9 +56,16 @@ def setup_controller_configuration(context: LaunchContext):
 
     controller_name = f"{ee_prefix}_controller"
     remappings = {"EE_SIDE_PREFIX": ee_prefix}
+    use_sim_time = read_launch_argument('use_sim_time', context)
+    # In Gazebo the mimic joints are independently actuated (see
+    # gripper.ros2_control.xacro), so the controller needs to list and
+    # command all of them, not just the leader.
+    config_file_name = (
+        'gripper_controller_gazebo.yaml' if use_sim_time == 'True'
+        else 'gripper_controller.yaml')
     param_file = os.path.join(
         get_package_share_directory('pal_pro_gripper_controller_configuration'),
-        'config', 'gripper_controller.yaml')
+        'config', config_file_name)
 
     parsed_yaml = parse_parametric_yaml(source_files=[param_file], param_rewrites=remappings)
 

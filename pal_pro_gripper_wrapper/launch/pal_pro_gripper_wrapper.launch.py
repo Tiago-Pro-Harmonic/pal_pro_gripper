@@ -30,6 +30,7 @@ from launch_ros.actions import Node
 class LaunchArguments(LaunchArgumentsBase):
 
     side: DeclareLaunchArgument = CommonArgs.side
+    use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
 
 
 def declare_actions(context, *args, **kwargs):
@@ -53,7 +54,7 @@ def declare_actions(context, *args, **kwargs):
         executable='gripper_grasper_srv',
         output='screen',
         emulate_tty=True,
-        parameters=[parsed_yaml],
+        parameters=[parsed_yaml, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
     )
 
     return [grasp_check_srv]

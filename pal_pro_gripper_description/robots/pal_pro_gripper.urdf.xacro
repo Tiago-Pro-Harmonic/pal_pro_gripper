@@ -16,6 +16,9 @@
     <xacro:arg name="mj_control" default="false" />
     <xacro:arg name="world_name" default="floor" />
 
+    <!-- false, true -->
+    <xacro:arg name="calibration_tool" default="False"/>
+
     <!-- PROPERTIES -->
     <xacro:property name="tool_changer" value="$(arg tool_changer)" />
     <xacro:property name="calibration_tool" value="$(arg calibration_tool)" />
